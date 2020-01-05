@@ -1,0 +1,16 @@
+{
+  "name": "neeto",
+  "version": "1.0.0",
+  "description": "a simple markdown editer",
+  "main": "app/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "TankNee",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "electron": "^7.1.7",
+    "marked": "^0.8.0"
+  }
+}
