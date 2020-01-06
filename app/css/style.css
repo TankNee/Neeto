@@ -59,29 +59,369 @@ button:disabled {
     position: relative;
 }
 
-.content{
+.content {
     height: 100vh;
     display: flex;
 }
 
-.raw_markdown, .renderer_html{
+.raw_markdown, .renderer_html {
     min-height: 100%;
     max-width: 50%;
     flex-grow: 1;
-    padding: 1em;
+    padding: 2em;
     overflow: scroll;
     font-size: 16px;
 }
-.raw_markdown{
-    border: 5px solid rgb(238, 252, 250);
-    background-color: rgb(238, 252, 250);
-    font-family: monospace;
+
+.raw_markdown {
+    border: 5px solid rgb(41,45,62);
+    background-color: rgb(41,45,62);
+    color: rgb(178,204,214);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
-.raw_markdown.drag-over{
+
+.raw_markdown.drag-over {
     background-color: rgb(181, 220, 216);
-    border-color: rgb(75,160,151);
+    border-color: rgb(75, 160, 151);
 }
-.raw_markdown.drag-error{
-    background-color: rgb(170, 57, 57,1);
-    border-color: rgb(255,170,170,1);
+
+.raw_markdown.drag-error {
+    background-color: rgb(170, 57, 57, 1);
+    border-color: rgb(255, 170, 170, 1);
+}
+
+/*自定义样式，实时生效*/
+
+/* 全局属性
+ * 页边距 padding:30px;
+ * 全文字体 font-family:ptima-Regular;
+ * 英文换行 word-break:break-all;
+ */
+
+.renderer_html {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono';
+}
+
+/* 段落，下方未标注标签参数均同此处
+   * 上边距 margin-top:5px;
+   * 下边距 margin-bottom:5px;
+   * 行高 line-height:26px;
+   * 词间距 word-spacing:3px;
+   * 字间距 letter-spacing:3px;
+   * 对齐 text-align:left;
+   * 颜色 color:#3e3e3e;
+   * 字体大小 font-size:16px;
+   * 首行缩进 text-indent:2em;
+   */
+
+.renderer_html p {
+    margin: 10px 10px;
+    line-height: 1.75;
+    /* letter-spacing: 0.05em; */
+    font-size: 16px;
+    word-spacing: 0.1em;
+}
+
+/* 一级标题 */
+
+.renderer_html h1 {
+    font-size: 1.3em;
+    text-align: center;
+    font-size: 30px;
+}
+
+/* 一级标题内容 */
+
+.renderer_html h1 span {
+    display: inline-block;
+    font-weight: normal;
+    background: rgb(248, 57, 41);
+    color: #ffffff;
+    padding: 3px 10px 1px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+/* 一级标题修饰 请参考有实例的主题 */
+
+.renderer_html h1:after {}
+
+/* 二级标题 */
+
+.renderer_html h2 {
+    display: block;
+    text-align: center;
+    background-image: url(https://my-wechat.mdnice.com/mdnice/mountain_2_20191028221337.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-size: 63px;
+    margin-top: 38px;
+    margin-bottom: 10px;
+}
+
+/*二级标题伪元素*/
+
+.renderer_html h2:before {}
+
+/* 二级标题内容 */
+
+.renderer_html h2 span {
+    text-align: center;
+    display: inline-block;
+    height: 38px;
+    line-height: 42px;
+    color: rgb(0, 0, 0);
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-size: 63px;
+    margin-top: 38px;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* 三级标题 */
+
+.renderer_html h3 {}
+
+/* 三级标题内容 */
+
+.renderer_html h3 span {
+    font-size: 14px;
+    color: rgb(165, 213, 93);
+}
+
+/* 三级标题修饰 请参考有实例的主题 */
+
+.renderer_html h3:after {}
+
+/* 无序列表整体样式
+   * list-style-type: square|circle|disc;
+   */
+
+.renderer_html ul {
+    font-size: 14px;
+}
+
+/* 无序列表整体样式
+   * list-style-type: upper-roman|lower-greek|lower-alpha;
+   */
+
+.renderer_html ol {
+    font-size: 14px;
+}
+
+/* 列表内容，不要设置li
+   */
+
+.renderer_html li section {
+    font-size: 13px;
+}
+
+/* 引用
+  * 左边缘颜色 border-left-color: black;
+  * 背景色 background: gray;
+  */
+
+.renderer_html blockquote {
+    font-style: normal;
+    padding: 10px;
+    position: relative;
+    line-height: 1.8;
+    text-indent: 0;
+    border: none;
+    color: #888;
+}
+
+.renderer_html blockquote:before {
+    content: "“";
+    display: inline;
+    color: #555555;
+    font-size: 4em;
+    font-family: Arial, serif;
+    line-height: 1em;
+    font-weight: 700;
+}
+
+/* 引用文字 */
+
+.renderer_html blockquote p {
+    display: inline;
+}
+
+/* 链接 
+   * border-bottom: 1px solid #009688;
+   */
+
+.renderer_html a {
+    color: rgb(248, 57, 41);
+    border-bottom: 1px solid #ff3502;
+    font-family: STHeitiSC-Light;
+}
+
+/* 加粗 */
+
+.renderer_html strong {
+    font-weight: border;
+    color: rgb(60, 112, 198)
+}
+
+/* 斜体 */
+
+.renderer_html em {
+    color: rgb(60, 112, 198) letter-spacing:0.3em;
+}
+
+/* 加粗斜体 */
+
+.renderer_html strong em {
+    color: rgb(60, 112, 198) letter-spacing:0.3em;
+}
+
+/* 删除线 */
+
+.renderer_html del {}
+
+/* 分隔线
+   * 粗细、样式和颜色
+   * border-top:1px solid #3e3e3e;
+   */
+
+.renderer_html hr {
+    height: 1px;
+    padding: 0;
+    border: none;
+    border-top: medium solidid #333;
+    text-align: center;
+    background-image: linear-gradient(to right, rgba(248, 57, 41, 0), rgba(248, 57, 41, 0.75), rgba(248, 57, 41, 0));
+}
+
+/* 图片
+   * 宽度 width:80%;
+   * 居中 margin:0 auto;
+   * 居左 margin:0 0;
+   */
+
+.renderer_html img {
+    border-radius: 5px 5px 5px 5px;
+    display: block;
+    margin: 20px auto;
+    width: 85%;
+    height: 100%;
+    object-fit: contain;
+    box-shadow: #84A1A8 0px 10px 15px;
+}
+
+/* 图片描述文字 */
+
+.renderer_html figcaption {
+    display: block;
+    font-size: 12px;
+    font-family: PingFangSC-Light;
+}
+
+/* 行内代码 */
+
+
+/* 非微信代码块
+   * 代码块不换行 display:-webkit-box !important;
+   * 代码块换行 display:block;
+   */
+
+.renderer_html pre code {}
+
+/*
+   * 表格内的单元格
+   * 字体大小 font-size: 16px;
+   * 边框 border: 1px solid #ccc;
+   * 内边距 padding: 5px 10px;
+   */
+
+.renderer_html table tr th, .renderer_html table tr td {
+    font-size: 14px;
+}
+
+/* 脚注文字 */
+
+.renderer_html .footnote-word {
+    color: rgb(248, 57, 41);
+}
+
+/* 脚注上标 */
+
+.renderer_html .footnote-ref {
+    color: rgb(248, 57, 41);
+}
+
+/*脚注链接样式*/
+
+.renderer_html .footnote-item em {
+    color: #6E1E51;
+    font-size: 12px;
+}
+
+/* "参考资料"四个字 
+   * 内容 content: "参考资料";
+   */
+
+.renderer_html .footnotes-sep:before {}
+
+/* 参考资料编号 */
+
+.renderer_html .footnote-num {}
+
+/* 参考资料文字 */
+
+.renderer_html .footnote-item p {}
+
+/* 参考资料解释 */
+
+.renderer_html .footnote-item p em {}
+
+/* 行间公式
+   * 最大宽度 max-width: 300% !important;
+   */
+
+.renderer_html .block-equation svg {}
+
+/* 行内公式
+   */
+
+.renderer_html .inline-equation svg {}
+
+.renderer_html pre {
+    background-color: rgb(41,45,62);
+    align-items: center;
+    padding: 10px;
+    border: 1px solid rgb(41,45,62);
+    border-radius: 4px;
+    margin: 10px 10px;
+    font-weight: 300;
+    box-shadow: #84A1A8 0px 10px 15px;
+}
+
+.renderer_html pre code{
+    color: rgb(178, 204, 204);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    word-wrap: break-word;
+}
+.renderer_html p code, .renderer_html li code {
+    background-color: rgb(41,45,62);
+    align-items: center;
+    padding: 2px 7px;
+    border: 1px solid rgb(41,45,62);
+    border-radius: 4px;
+    margin: 2px 5px;
+    color: rgb(178, 204, 204);
+    font-weight: 300;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    
+}
+.renderer_html li{
+    line-height: 1.75;
 }

@@ -5,12 +5,16 @@
   "main": "app/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "package": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10"
   },
   "author": "TankNee",
   "license": "Apache-2.0",
   "dependencies": {
     "electron": "^7.1.7",
-    "marked": "^0.8.0"
+    "markdown-it": "^10.0.0",
+    "marked": "^0.8.0",
+    "showdown": "^1.9.1",
+    "showdown-highlight": "^2.1.3"
   }
 }

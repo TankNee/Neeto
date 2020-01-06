@@ -1,7 +1,11 @@
 const marked = require('marked')
+const showdown = require('showdown')
+const markdownit = require('markdown-it')
+const showdownhighlight = require('showdown-highlight')
 const { remote, ipcRenderer } = require('electron')
 const mainProcess = remote.require('./main.js')
 const path = require('path')
+
 
 let filePath = null;
 let originalContent = '';
@@ -22,9 +26,19 @@ const currentWindow = remote.getCurrentWindow();
 
 //定义一个函数用于重复执行HTML渲染的任务
 const rendererMarkDownToHtml = (markdown) => {
-    htmlView.innerHTML = marked(markdown, {
-        sanitize: false
-    })
+    console.log(1)
+    console.log(markdown)
+    // htmlView.innerHTML = marked(markdown, {
+    //     sanitize: false
+    // })
+    const converter = new showdown.Converter({
+        extensions: [showdownhighlight],
+        tables: true,
+        tasklists: true
+    });
+    htmlView.innerHTML = converter.makeHtml(markdown)
+    // const markit = new markdownit();
+    // htmlView.innerHTML = markit.render(markdown)
 }
 
 // 为输入框绑定事件
@@ -32,6 +46,7 @@ markdownView.addEventListener('keyup', (e) => {
     const content = e.target.value
     rendererMarkDownToHtml(content)
     updateUserInterface(content !== originalContent);
+    mainProcess.isDocumentEditedWindows(true)
 })
 
 // 打开文件
@@ -39,13 +54,59 @@ openFileButton.addEventListener('click', () => {
     mainProcess.getFileFromUser(currentWindow);
 })
 
-// 监听频道，接收主进程传递来的消息
+// 监听file-opened频道，接收主进程传递来的消息
 ipcRenderer.on('file-opened', (e, file, content) => {
-    filePath = file
-    originalContent = content
-    markdownView.value = content;
-    rendererMarkDownToHtml(content);
-    updateUserInterface();
+    console.log('markdownView')
+    console.log(markdownView.value)
+    console.log('originalContent')
+    console.log(originalContent)
+    if (!(markdownView.value === originalContent)) {
+        const result = remote.dialog.showMessageBox(currentWindow, {
+            type: 'warning',
+            title: '是否覆盖您的修改',
+            message: '您有未保存的文件，是否要覆盖该文件？',
+            buttons: [
+                'Yes',
+                'Cancel'
+            ],
+            defaultId: 0,
+            cancelId: 1
+        })
+        result.then(res => {
+            if (res.response === 1) {
+                return;
+            } else {
+                renderFile(file, content)
+            }
+        })
+
+    } else {
+        renderFile(file, content)
+    }
+
+    // filePath = file
+    // originalContent = content
+    // markdownView.value = content;
+    // mainProcess.isDocumentEditedWindows(false)
+    // rendererMarkDownToHtml(content);
+    // updateUserInterface(false);
+})
+/**
+ * 监听file-changed频道
+ */
+ipcRenderer.on('file-changed', (e, file, content) => {
+    // const result = remote.dialog.showMessageBox(currentWindow, {
+    //     type: 'warning',
+    //     title: '文件已被修改',
+    //     message: '您的文件已被外部程序修改',
+    //     buttons: [
+    //         'Yes',
+    //         'Cancel'
+    //     ],
+    //     defaultId: 0,
+    //     cancelId: 1
+    // })
+    renderFile(file,content)
 })
 
 // 新建文件
@@ -81,12 +142,16 @@ saveHtmlButton.addEventListener('click', () => {
 // 将markdown文件保存下来
 saveMarkdownButton.addEventListener('click', () => {
     originalContent = markdownView.value
+    updateUserInterface(false)
+    mainProcess.isDocumentEditedWindows(false)
     mainProcess.saveMarkdown(currentWindow, filePath, markdownView.value)
 })
 
 // 回滚
 revertButton.addEventListener('click', () => {
     markdownView.value = originalContent
+    updateUserInterface(false)
+    mainProcess.isDocumentEditedWindows(false)
     rendererMarkDownToHtml(originalContent)
 })
 
@@ -104,7 +169,7 @@ const getDroppedFile = (e) => {
 }
 const fileTypeIsSupported = (file) => {
     console.log(file)
-    return ['text/plain','text/x-markdown','text/md','image/png','image/jpeg','image/jpg',''].includes(file.type)
+    return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', ''].includes(file.type)
 }
 markdownView.addEventListener('dragover', (e) => {
     const file = getDraggedFile(e)
@@ -114,10 +179,10 @@ markdownView.addEventListener('dragover', (e) => {
         markdownView.classList.add('drag-error')
     }
 })
-markdownView.addEventListener('drop',(e)=>{
+markdownView.addEventListener('drop', (e) => {
     const file = getDroppedFile(e)
     if (fileTypeIsSupported(file)) {
-        mainProcess.openFile(currentWindow,file.path)
+        mainProcess.openFile(currentWindow, file.path)
     } else {
         alert("这种文件暂时不支持编辑")
     }
@@ -129,3 +194,18 @@ markdownView.addEventListener('dragleave', () => {
     markdownView.classList.remove('drag-over')
     markdownView.classList.remove('drag-error')
 })
+/**
+ * 重构显示一个新文件的操作
+ * @param {*} file 
+ * @param {*} content 
+ */
+const renderFile = (file, content) => {
+    filePath = file
+    originalContent = content
+
+    markdownView.value = content
+    rendererMarkDownToHtml(content)
+
+    updateUserInterface(false)
+    mainProcess.isDocumentEditedWindows(false)
+}
