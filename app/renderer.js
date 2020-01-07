@@ -1,10 +1,10 @@
-const marked = require('marked')
+// 模块引入
 const showdown = require('showdown')
-const markdownit = require('markdown-it')
 const showdownhighlight = require('showdown-highlight')
 const { remote, ipcRenderer } = require('electron')
 const mainProcess = remote.require('./main.js')
 const path = require('path')
+const showdownKatex = require('showdown-katex')
 
 
 let filePath = null;
@@ -26,17 +26,22 @@ const currentWindow = remote.getCurrentWindow();
 
 //定义一个函数用于重复执行HTML渲染的任务
 const rendererMarkDownToHtml = (markdown) => {
-    console.log(1)
-    console.log(markdown)
-    // htmlView.innerHTML = marked(markdown, {
-    //     sanitize: false
-    // })
     const converter = new showdown.Converter({
-        extensions: [showdownhighlight],
+        extensions: [
+            showdownhighlight,
+            showdownKatex({
+                delimiters: [
+                    { left: "$$", right: "$$", display: false }, // katex default
+                    { left: '~', right: '~', display: false, asciimath: true },
+                    { left: '$', right: '$', display: false, asciimath: true }
+                ]
+            }),
+        ],
         tables: true,
         tasklists: true
     });
     htmlView.innerHTML = converter.makeHtml(markdown)
+
     // const markit = new markdownit();
     // htmlView.innerHTML = markit.render(markdown)
 }
@@ -48,6 +53,21 @@ markdownView.addEventListener('keyup', (e) => {
     updateUserInterface(content !== originalContent);
     mainProcess.isDocumentEditedWindows(true)
 })
+// 实现括号的自动补全
+markdownView.addEventListener('keyup', (e) => {
+    console.log(e.target.value.substring(e.target.value.length - 1))
+    console.log(String.fromCharCode(e.keyCode))
+    var lastChar = e.target.value.substring(e.target.value.length - 1)
+    if (lastChar === '{' && e.keyCode == 219) {
+        e.target.value += '}'
+    }
+    if (lastChar === '[' && e.keyCode == 219) {
+        e.target.value += ']'
+    }
+    if (lastChar === '(' && e.keyCode == 57) {
+        e.target.value += ')'
+    }
+})
 
 // 打开文件
 openFileButton.addEventListener('click', () => {
@@ -56,10 +76,6 @@ openFileButton.addEventListener('click', () => {
 
 // 监听file-opened频道，接收主进程传递来的消息
 ipcRenderer.on('file-opened', (e, file, content) => {
-    console.log('markdownView')
-    console.log(markdownView.value)
-    console.log('originalContent')
-    console.log(originalContent)
     if (!(markdownView.value === originalContent)) {
         const result = remote.dialog.showMessageBox(currentWindow, {
             type: 'warning',
@@ -106,7 +122,7 @@ ipcRenderer.on('file-changed', (e, file, content) => {
     //     defaultId: 0,
     //     cancelId: 1
     // })
-    renderFile(file,content)
+    renderFile(file, content)
 })
 
 // 新建文件
@@ -168,7 +184,7 @@ const getDroppedFile = (e) => {
     return e.dataTransfer.files[0]
 }
 const fileTypeIsSupported = (file) => {
-    console.log(file)
+    // console.log(file)
     return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', ''].includes(file.type)
 }
 markdownView.addEventListener('dragover', (e) => {
