@@ -12,7 +12,13 @@ const windows = new Set()
 // 打开的文件
 const openFiles = new Map()
 
+global.baseConfig = {
+    baseUrl: 'http://localhost:8080/api',
+    picBedUrl: 'https://pic.tanknee.cn/api/upload'
+}
+
 app.on('ready', () => {
+    Menu.setApplicationMenu(applicationMenu)
     creatWindow();
 })
 app.on('will-finish-launching', () => {

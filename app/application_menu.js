@@ -16,6 +16,34 @@ const template = [
                 role: 'paste'
             }
         ]
+    },
+    {
+        label: 'Tools',
+        submenu: [
+            {
+                label: 'Reload',
+                accelerator: 'CommandOrControl+R',
+                role: 'reload'
+            },
+            {
+                label: 'DevTools',
+                accelerator: 'F12',
+                role: 'toggledevtools'
+            },
+            {
+                label: 'SaveAll',
+                accelerator: 'CommandOrControl+S',
+                click(item,focusedWindow){
+                    focusedWindow.webContents.send('save-markdown')
+                }
+            }
+        ]
     }
 ]
+if (process.platform === 'darwin') {
+    const name = 'Neeto'
+    template.unshift({
+        label: name
+    })
+}
 module.exports = Menu.buildFromTemplate(template);
