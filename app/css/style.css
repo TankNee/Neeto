@@ -234,8 +234,9 @@ button:disabled {
     position: relative;
     line-height: 1.8;
     text-indent: 0;
-    border: none;
+    border-radius: 5px;
     color: #888;
+    box-shadow: #84A1A8 0px 10px 15px;
 }
 
 .renderer_html blockquote:before {
@@ -260,14 +261,14 @@ button:disabled {
 
 .renderer_html a {
     color: rgb(248, 57, 41);
-    border-bottom: 1px solid #ff3502;
+    /* border-bottom: 1px solid #ff3502; */
     font-family: STHeitiSC-Light;
 }
 
 /* 加粗 */
 
 .renderer_html strong {
-    font-weight: border;
+    font-weight: bold;
     color: rgb(60, 112, 198)
 }
 

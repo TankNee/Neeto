@@ -9,7 +9,7 @@ const showdownKatex = require('showdown-katex')
 
 let filePath = null;
 let originalContent = '';
-
+let isDocChanged = false
 // 获取页面中的各个控件
 const markdownView = document.querySelector('#markdown')
 const htmlView = document.querySelector('#html')
@@ -50,8 +50,9 @@ const rendererMarkDownToHtml = (markdown) => {
 markdownView.addEventListener('keyup', (e) => {
     const content = e.target.value
     rendererMarkDownToHtml(content)
-    updateUserInterface(content !== originalContent);
-    mainProcess.isDocumentEditedWindows(true)
+    isDocChanged = true
+    updateUserInterface(isDocChanged);
+    mainProcess.isDocumentEditedWindows(isDocChanged)
 })
 // 实现括号的自动补全
 markdownView.addEventListener('keyup', (e) => {
@@ -76,7 +77,7 @@ openFileButton.addEventListener('click', () => {
 
 // 监听file-opened频道，接收主进程传递来的消息
 ipcRenderer.on('file-opened', (e, file, content) => {
-    if (!(markdownView.value === originalContent)) {
+    if (isDocChanged) {
         const result = remote.dialog.showMessageBox(currentWindow, {
             type: 'warning',
             title: '是否覆盖您的修改',
@@ -99,29 +100,11 @@ ipcRenderer.on('file-opened', (e, file, content) => {
     } else {
         renderFile(file, content)
     }
-
-    // filePath = file
-    // originalContent = content
-    // markdownView.value = content;
-    // mainProcess.isDocumentEditedWindows(false)
-    // rendererMarkDownToHtml(content);
-    // updateUserInterface(false);
 })
 /**
  * 监听file-changed频道
  */
 ipcRenderer.on('file-changed', (e, file, content) => {
-    // const result = remote.dialog.showMessageBox(currentWindow, {
-    //     type: 'warning',
-    //     title: '文件已被修改',
-    //     message: '您的文件已被外部程序修改',
-    //     buttons: [
-    //         'Yes',
-    //         'Cancel'
-    //     ],
-    //     defaultId: 0,
-    //     cancelId: 1
-    // })
     renderFile(file, content)
 })
 
@@ -138,7 +121,7 @@ const updateUserInterface = (isEdited) => {
         title = `${path.basename(filePath)} - ${title}`
     }
     if (isEdited) {
-        title = `${title} (Edited)`;
+        title = `${title} *`;
     }
     currentWindow.setTitle(title)
     if (process.platform == 'darwin') {
@@ -158,6 +141,7 @@ saveHtmlButton.addEventListener('click', () => {
 // 将markdown文件保存下来
 saveMarkdownButton.addEventListener('click', () => {
     originalContent = markdownView.value
+    isDocChanged = false
     updateUserInterface(false)
     mainProcess.isDocumentEditedWindows(false)
     mainProcess.saveMarkdown(currentWindow, filePath, markdownView.value)
@@ -222,6 +206,7 @@ const renderFile = (file, content) => {
     markdownView.value = content
     rendererMarkDownToHtml(content)
 
-    updateUserInterface(false)
-    mainProcess.isDocumentEditedWindows(false)
+    isDocChanged = false
+    updateUserInterface(isDocChanged)
+    mainProcess.isDocumentEditedWindows(isDocChanged)
 }
