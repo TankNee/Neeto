@@ -41,6 +41,7 @@ const creatWindow = exports.creatWindow = () => {
         show: false
     })
     newWindow.loadFile('app/pages/index/index.html')
+    // newWindow.loadFile('app/pages/editor/editor.html')
     
     newWindow.once('ready-to-show', () => {
         newWindow.show();

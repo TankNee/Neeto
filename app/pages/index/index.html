@@ -6,10 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Neeto</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    
     <link rel="stylesheet" href="../../css/code.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.css"
-        integrity="sha384-9tPv11A+glH/on/wEu99NVwDPwkMQESOocs/ZGXPoIiLE8MU/qkqUcZ3zzL+6DuH" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.css"
+        integrity="sha384-9tPv11A+glH/on/wEu99NVwDPwkMQESOocs/ZGXPoIiLE8MU/qkqUcZ3zzL+6DuH" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="../../css/katex.min.css">
+    <link rel="stylesheet" href="../../css/simplemde.min.css">
+    <link rel="stylesheet" href="../../css/defaultStyle.css">
+    <link rel="stylesheet" href="../../css/style.css">
     <!-- <script src="../../highlight.js"></script> -->
 </head>
 
@@ -28,7 +32,10 @@
 
     <section class="content">
         <label for="markdown" hidden>MarkDown Content</label>
-        <textarea class="raw_markdown" id="markdown"></textarea>
+        <div class="mde">
+            <textarea class="raw_markdown" id="markdown" cols="30" rows="10"></textarea>
+        </div>
+        
         <div class="renderer_html" id="html"></div>
     </section>
 </body>

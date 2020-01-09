@@ -1,0 +1,22 @@
+.editor{
+    display: flex;
+}
+.mde{
+    display: flex;
+    flex-direction: column;
+}
+.raw_markdown, .renderer_html {
+    min-height: 100%;
+    max-width: 50%;
+    flex-grow: 1;
+    padding: 2em;
+    overflow: scroll;
+    font-size: 16px;
+}
+
+.raw_markdown {
+    /* border: 5px solid rgb(41,45,62);
+    background-color: rgb(41,45,62);
+    color: rgb(178,204,214);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; */
+}

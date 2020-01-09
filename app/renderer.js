@@ -6,6 +6,13 @@ const { Menu } = remote
 const mainProcess = remote.require('./main.js')
 const path = require('path')
 const showdownKatex = require('showdown-katex')
+const SimpleMde = require('simplemde')
+
+var smde = new SimpleMde({
+    element: document.getElementById("markdown"),
+    autoDownloadFontAwesome: true,
+    status: false
+})
 
 // 几个状态参量
 let filePath = null;
@@ -17,7 +24,7 @@ let baseConfig = {
     testToken: 'bdaaa8a43a8e8e58ce46cd5aa38848d6'
 }
 // 获取页面中的各个控件
-const markdownView = document.querySelector('#markdown')
+const markdownView = document.querySelector('.CodeMirror-scroll')
 const htmlView = document.querySelector('#html')
 const newFileButton = document.querySelector('#new_file')
 const openFileButton = document.querySelector('#open_file')
@@ -65,33 +72,50 @@ const rendererMarkDownToHtml = (markdown) => {
 }
 
 // 为输入框绑定事件
-markdownView.addEventListener('keyup', (e) => {
-    isDocChanged = true && (originalContent !== e.target.value)
-    const content = e.target.value
+smde.codemirror.on("change", function(){
+    isDocChanged = true && (originalContent !== smde.value())
+    const content = smde.value()
     rendererMarkDownToHtml(content)
     updateUserInterface(isDocChanged);
     mainProcess.isDocumentEditedWindows(isDocChanged)
     saveMarkdownButton.disabled = !isDocChanged
-})
-// 实现括号的自动补全
-markdownView.addEventListener('keyup', (e) => {
-    var lastChar = e.target.value.substring(e.target.value.length - 1)
-    if (lastChar === '{' && e.keyCode == 219) {
-        e.target.value += '}'
-    }
-    if (lastChar === '[' && e.keyCode == 219) {
-        e.target.value += ']'
-    }
-    if (lastChar === '(' && e.keyCode == 57) {
-        e.target.value += ')'
-    }
-})
-// 实现右键菜单
-markdownView.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
+});
+smde.codemirror.on("contextmenu", function(e){
     const mdContextMenu = Menu.buildFromTemplate(contextMenuTemplate)
     mdContextMenu.popup()
-})
+});
+
+
+
+
+
+// markdownView.addEventListener('keyup', (e) => {
+//     isDocChanged = true && (originalContent !== e.target.value)
+//     const content = e.target.value
+//     rendererMarkDownToHtml(content)
+//     updateUserInterface(isDocChanged);
+//     mainProcess.isDocumentEditedWindows(isDocChanged)
+//     saveMarkdownButton.disabled = !isDocChanged
+// })
+// 实现括号的自动补全
+// markdownView.addEventListener('keyup', (e) => {
+//     var lastChar = e.target.value.substring(e.target.value.length - 1)
+//     if (lastChar === '{' && e.keyCode == 219) {
+//         e.target.value += '}'
+//     }
+//     if (lastChar === '[' && e.keyCode == 219) {
+//         e.target.value += ']'
+//     }
+//     if (lastChar === '(' && e.keyCode == 57) {
+//         e.target.value += ')'
+//     }
+// })
+// 实现右键菜单
+// markdownView.addEventListener('contextmenu', (e) => {
+//     e.preventDefault();
+//     const mdContextMenu = Menu.buildFromTemplate(contextMenuTemplate)
+//     mdContextMenu.popup()
+// })
 
 // 打开文件
 openFileButton.addEventListener('click', () => {
@@ -179,7 +203,7 @@ saveMarkdownButton.addEventListener('click', () => {
     isDocChanged = false
     updateUserInterface(isDocChanged)
     mainProcess.isDocumentEditedWindows(isDocChanged)
-    mainProcess.saveMarkdown(currentWindow, filePath, markdownView.value)
+    mainProcess.saveMarkdown(currentWindow, filePath, smde.value())
 })
 
 // 回滚
@@ -208,16 +232,15 @@ const fileTypeIsSupported = (file) => {
     // console.log(file)
     return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', ''].includes(file.type)
 }
-markdownView.addEventListener('dragover', (e) => {
+smde.codemirror.on("dragover", function(editor,e){
     const file = getDraggedFile(e)
-    console.log(file)
     if (fileTypeIsSupported(file)) {
         markdownView.classList.add('drag-over')
     } else {
         markdownView.classList.add('drag-error')
     }
-})
-markdownView.addEventListener('drop', (e) => {
+});
+smde.codemirror.on("drop", function(editor,e){
     const file = getDroppedFile(e)
     var df = e.dataTransfer
     // 文件对象数组
@@ -254,8 +277,10 @@ markdownView.addEventListener('drop', (e) => {
                     .then(res => {
                         finalUrl = `<img src="${res.data.url}">`
                         console.log(res.data.url)
-                        markdownView.value += finalUrl
-                        rendererMarkDownToHtml(markdownView.value)
+                        var tempCon = smde.value()
+                        tempCon += finalUrl
+                        smde.value(tempCon)
+                        rendererMarkDownToHtml(smde.value())
                         urlResult.push(res.data.url)
                     })
             });
@@ -268,14 +293,78 @@ markdownView.addEventListener('drop', (e) => {
     }
     isDocChanged = false
     saveMarkdownButton.disabled = !isDocChanged
-    markdownView.classList.remove('drag-over')
-    markdownView.classList.remove('drag-error')
-})
-markdownView.addEventListener('dragleave', () => {
-    // 清除样式
-    markdownView.classList.remove('drag-over')
-    markdownView.classList.remove('drag-error')
-})
+});
+
+
+
+// markdownView.addEventListener('dragover', (e) => {
+//     const file = getDraggedFile(e)
+//     console.log(file)
+//     if (fileTypeIsSupported(file)) {
+//         markdownView.classList.add('drag-over')
+//     } else {
+//         markdownView.classList.add('drag-error')
+//     }
+// })
+// markdownView.addEventListener('drop', (e) => {
+//     const file = getDroppedFile(e)
+//     var df = e.dataTransfer
+//     // 文件对象数组
+//     var dropFiles = []
+//     console.log(file)
+//     if (fileTypeIsSupported(file)) {
+//         if (file.type.indexOf("image") !== -1) {
+//             // 获取图片的File对象
+//             if (df.items !== undefined) {
+//                 // Chrome有items属性，对Chrome的单独处理
+//                 for (var i = 0; i < df.items.length; i++) {
+//                     var item = df.items[i];
+//                     console.log(item.getAsFile())
+//                     // 用webkitGetAsEntry禁止上传目录
+//                     if (item.kind === "file" && item.webkitGetAsEntry().isFile) {
+//                         var dropFile = item.getAsFile();
+//                         dropFiles.push(dropFile);
+//                     }
+//                 }
+//             }
+//             // 上传到图床
+//             const urlResult = []
+//             dropFiles.forEach(file => {
+//                 const formdata = new FormData()
+//                 formdata.append('image', file)
+//                 fetch(baseConfig.picBedUrl, {
+//                     method: 'post',
+//                     body: formdata,
+//                     headers: {
+//                         token: baseConfig.testToken
+//                     }
+//                 })
+//                     .then(res => res.json())
+//                     .then(res => {
+//                         finalUrl = `<img src="${res.data.url}">`
+//                         console.log(res.data.url)
+//                         markdownView.value += finalUrl
+//                         rendererMarkDownToHtml(markdownView.value)
+//                         urlResult.push(res.data.url)
+//                     })
+//             });
+//             console.log(urlResult)
+//         } else {
+//             mainProcess.openFile(currentWindow, file.path)
+//         }
+//     } else {
+//         alert("这种文件暂时不支持编辑")
+//     }
+//     isDocChanged = false
+//     saveMarkdownButton.disabled = !isDocChanged
+//     markdownView.classList.remove('drag-over')
+//     markdownView.classList.remove('drag-error')
+// })
+// markdownView.addEventListener('dragleave', () => {
+//     // 清除样式
+//     markdownView.classList.remove('drag-over')
+//     markdownView.classList.remove('drag-error')
+// })
 /**
  * 上传到图床
  * @param {*} files 
@@ -312,7 +401,7 @@ const renderFile = (file, content) => {
     filePath = file
     originalContent = content
 
-    markdownView.value = content
+    smde.value(content)
     rendererMarkDownToHtml(content)
 
     isDocChanged = false
