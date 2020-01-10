@@ -15,6 +15,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "fontawesome": "^5.6.3",
+        "mdui": "^0.4.3",
         "showdown": "^1.9.1",
         "showdown-highlight": "^2.1.3",
         "showdown-katex": "^0.6.0",

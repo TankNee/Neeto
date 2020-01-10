@@ -34,7 +34,7 @@ textarea, input, div, button {
     display: flex;
     height: 100%;
     width: 100%;
-    top: 20px;
+    top: 30px;
     position: fixed;
 }
 

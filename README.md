@@ -4,17 +4,20 @@
 
 ### ScreenShot：
 
-<img src="https://img.tanknee.cn/blogpicbed/2020/01/20200110895f14bb25c77.png" alt="1.0.5"/>
+<img src="https://img.tanknee.cn/blogpicbed/2020/01/202001103a1ef34bc448f.png"/>
 
-### LaTex公式演示：
+### 语法演示：
 
-<img src="https://img.tanknee.cn/blogpicbed/2020/01/20200107be311b41c612e.png"/>
+<img src="https://img.tanknee.cn/blogpicbed/2020/01/202001101a30d18c5aba9.png"/>
 
-<img src="https://img.tanknee.cn/blogpicbed/2020/01/202001070e51d9cfb2f2e.png"/>
+### LaTex语法支持
+
+<img src="https://img.tanknee.cn/blogpicbed/2020/01/202001102b462e1b49196.png"/>
 
 ### Running Shot
 
-<img src="https://img.tanknee.cn/blogpicbed/2020/01/20200105a230504a47452.gif" alt="1.0.0版本"/>
+> 待补充
+> ---
 
 ## Neeto 在1.X版本中发展设想
 
@@ -22,7 +25,7 @@
 
 - [ ] 括号的自动补全
 - [x] LaTex公式解析
-- [ ] 图片粘贴后上传到图床，并用返回的链接替换输入
+- [x] 图片粘贴后上传到图床，并用返回的链接替换输入
 - [ ] 实现云笔记功能，但不保证实现云协作
 - [ ] 实现网页端的后台管理系统，应该将会使用Java构建后台
 

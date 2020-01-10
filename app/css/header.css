@@ -9,7 +9,7 @@ header .menu_bar {
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    height: 26px;
+    height: 30px;
     width: 100%;
     -webkit-app-region: drag;
 }
