@@ -283,7 +283,11 @@ smde.codemirror.on("drop", function (editor, e) {
                         console.log(res.data.url)
                         var tempCon = smde.value()
                         tempCon += finalUrl
-                        smde.value(tempCon)
+                        // smde.value().replace(finalUrl)
+                        // smde.replaceSelection(finalUrl)
+                        codemir =  smde.codemirror
+                        codemir.doc.replaceSelection(finalUrl)
+                        console.log(codemir)
                         rendererMarkDownToHtml(smde.value())
                         urlResult.push(res.data.url)
                     })
