@@ -22,7 +22,7 @@ app.on('ready', () => {
     globalShortcut.register('CommandOrControl+R', () => {
         curwindow.webContents.reload()
     })
-    globalShortcut.register('F3', () => {
+    globalShortcut.register('CommandOrControl+Shift+I', () => {
         curwindow.webContents.openDevTools()
     })
     curwindow.webContents.openDevTools()

@@ -105,14 +105,15 @@ button {
 .btn_icon:after {
     content: attr(data-btn);
     /*后去要提示的文本*/
-    padding: 8px;
+    font-size: 15px;
+    padding: 7px;
     white-space: nowrap;
     /*强制不换行*/
     background-color: rgb(206,232,250);
     /*提示框背景颜色*/
     color: rgb(45,82,124);
     /*提示字体颜色*/
-    margin-left: 30px;
+    margin-left: -35px;
     margin-top: -17px;
     border-radius: 5px;
 }

@@ -49,12 +49,12 @@ header .menu_bar .menu_btn {
     margin: 0px 10px;
 }
 
-#menu_minize {
+#menu_minimize {
     background-image: url(../../assets/images/minize.png);
 }
 
-#menu_minize:hover {
-    background-color: rgba(237,237,237,1);
+#menu_minimize:hover {
+    
 }
 
 #menu_win {
@@ -62,7 +62,7 @@ header .menu_bar .menu_btn {
 }
 
 #menu_win:hover {
-    background-color: rgba(237,237,237,1);
+    
 }
 
 #menu_close {
@@ -70,7 +70,7 @@ header .menu_bar .menu_btn {
 }
 
 #menu_close:hover {
-    background-color: rgba(237,237,237,1);
+    
 }
 .main_head .left_part .menu_btn{
     height: 20px;
