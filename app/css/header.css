@@ -1,12 +1,17 @@
 header {
     -webkit-app-region: drag;
     z-index: 3;
+    
 }
 
 header .menu_bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    height: 26px;
+    width: 100%;
+    -webkit-app-region: drag;
 }
 
 
@@ -47,6 +52,7 @@ header .menu_bar .menu_btn {
     background-color: rgba(255, 255, 255, 0);
     background-size: 100% 100%;
     margin: 0px 10px;
+    cursor: pointer
 }
 
 #menu_minimize {

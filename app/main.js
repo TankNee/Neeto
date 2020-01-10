@@ -84,6 +84,9 @@ const creatWindow = exports.creatWindow = () => {
         windows.delete(newWindow)
         stopWatchingFile(newWindow)
         newWindow = null
+        // if (windows.size == 0) {
+        //     app.quit();
+        // }
         // app.quit()
     })
     windows.add(newWindow)

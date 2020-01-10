@@ -1,7 +1,7 @@
 // 模块引入
 const showdown = require('showdown')
 const showdownhighlight = require('showdown-highlight')
-const { remote, ipcRenderer } = require('electron')
+const { remote, ipcRenderer, shell } = require('electron')
 const { Menu } = remote
 const mainProcess = remote.require('./main.js')
 const path = require('path')
@@ -33,6 +33,7 @@ const htmlView = document.querySelector('#html')
 const newFileButton = document.querySelector('#new_file')
 const openFileButton = document.querySelector('#files')
 const saveMarkdownButton = document.querySelector('#save')
+const windowTitle = document.querySelector('#file_name')
 const saveHtmlButton = document.querySelector('#save_html')
 const revertButton = document.querySelector('#revert')
 const showFileButton = document.querySelector('#show_file')
@@ -100,21 +101,29 @@ smde.codemirror.on("contextmenu", function (e) {
 minimizeBtn.addEventListener('click', (e) => {
     currentWindow.minimize()
 })
-winBtn.addEventListener('click',(e)=>{
+winBtn.addEventListener('click', (e) => {
     if (currentWindow.isMaximized()) {
         currentWindow.restore()
-    }else{
+    } else {
         currentWindow.maximize()
     }
-    
+
 })
-closeBtn.addEventListener('click',(e)=>{
+closeBtn.addEventListener('click', (e) => {
     currentWindow.close()
 })
 
 // 打开文件
 openFileButton.addEventListener('click', () => {
     mainProcess.getFileFromUser(currentWindow);
+})
+htmlView.addEventListener('click', (e) => {
+    if (e.target.href) {
+        // 阻止默认行为
+        e.preventDefault()
+        //在默认浏览器中打开
+        shell.openExternal(e.target.href)
+    }
 })
 
 // 监听file-opened频道，接收主进程传递来的消息
@@ -176,7 +185,7 @@ const updateUserInterface = (isEdited) => {
     if (isEdited) {
         title = `${title} *`;
     }
-    currentWindow.setTitle(title)
+    windowTitle.innerHTML = title
     if (process.platform == 'darwin') {
         currentWindow.setDocumentEdited(isEdited)
     }

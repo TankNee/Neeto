@@ -34,7 +34,8 @@ textarea, input, div, button {
     display: flex;
     height: 100%;
     width: 100%;
-    
+    top: 20px;
+    position: fixed;
 }
 
 .controls {
@@ -82,6 +83,7 @@ button {
     background-color: transparent;
     background-size: 100% 100%;
     margin: 20px 0px;
+    cursor: pointer
 }
 
 .btn_icon:before, .btn_icon:after {
@@ -92,9 +94,9 @@ button {
     /*设为最上层*/
     /*鼠标放上元素上时的动画，鼠标放上后效果在.tip-*:hover:before, .tip-*:hover:after中设置;
     0.3s:规定完成过渡效果需要多少秒或毫秒,ease:规定慢速开始，然后变快，然后慢速结束的过渡效果*/
-    transition: 0.3s ease;
-    -webkit-transition: 0.3s ease;
-    -moz-transition: 0.3s ease;
+    transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+    -moz-transition: 0.5s ease;
 }
 
 .btn_icon:before {
@@ -132,7 +134,8 @@ button {
 }
 
 #new_file:hover {
-    background-image: url(../../assets/images/new_hover.png);
+    /* background-image: url(../../assets/images/new_hover.png); */
+    background-image: none;
 }
 
 #files {
@@ -140,7 +143,8 @@ button {
 }
 
 #files:hover {
-    background-image: url(../../assets/images/files_hover.png);
+    /* background-image: url(../../assets/images/files_hover.png); */
+    background-image: none;
 }
 
 #save {
@@ -148,7 +152,8 @@ button {
 }
 
 #save:hover {
-    background-image: url(../../assets/images/save_hover.png);
+    /* background-image: url(../../assets/images/save_hover.png); */
+    background-image: none;
 }
 
 #cloud {
@@ -156,7 +161,8 @@ button {
 }
 
 #cloud:hover {
-    background-image: url(../../assets/images/cloud_hover.png);
+    /* background-image: url(../../assets/images/cloud_hover.png); */
+    background-image: none;
 }
 
 #setting {
@@ -164,7 +170,8 @@ button {
 }
 
 #setting:hover {
-    background-image: url(../../assets/images/settings_hover.png);
+    /* background-image: url(../../assets/images/settings_hover.png); */
+    background-image: none;
 }
 
 .raw_markdown, .renderer_html {
@@ -185,12 +192,7 @@ button {
     flex-direction: column;
 }
 
-.raw_markdown {
-    /* border: 5px solid rgb(41,45,62);
-    background-color: rgb(41,45,62);
-    color: rgb(178,204,214);
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; */
-}
+
 /* 
 .CodeMirror-scroll .drag-over {
     background-color: rgb(181, 220, 216);
@@ -212,17 +214,18 @@ button {
 /*滚动条滑块*/
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: #535353;
+    /* border-radius: 10px; */
+    /* -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); */
+    background: rgb(206,232,250,1);
 }
 
 /*滚动条轨道*/
 
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0);
-    border-radius: 10px;
+    /* border-radius: 10px; */
     background: #ccc;
+    background: transparent;
 }
 
 .CodeMirror {
