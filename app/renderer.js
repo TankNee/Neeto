@@ -11,7 +11,11 @@ const SimpleMde = require('simplemde')
 var smde = new SimpleMde({
     element: document.getElementById("markdown"),
     autoDownloadFontAwesome: true,
-    status: false
+    status: false,
+    toolbar: [
+        "bold", "italic", "strikethrough", "heading", "code", "quote", "unordered-list",
+        "ordered-list", "clean-block", "link", "image", "table", "horizontal-rule", "preview", "side-by-side", "fullscreen", "guide"
+    ]
 })
 
 // 几个状态参量
@@ -24,11 +28,11 @@ let baseConfig = {
     testToken: 'bdaaa8a43a8e8e58ce46cd5aa38848d6'
 }
 // 获取页面中的各个控件
-const markdownView = document.querySelector('.CodeMirror-scroll')
+const markdownView = document.querySelector('.CodeMirror')
 const htmlView = document.querySelector('#html')
 const newFileButton = document.querySelector('#new_file')
-const openFileButton = document.querySelector('#open_file')
-const saveMarkdownButton = document.querySelector('#save_markdown')
+const openFileButton = document.querySelector('#files')
+const saveMarkdownButton = document.querySelector('#save')
 const saveHtmlButton = document.querySelector('#save_html')
 const revertButton = document.querySelector('#revert')
 const showFileButton = document.querySelector('#show_file')
@@ -72,7 +76,7 @@ const rendererMarkDownToHtml = (markdown) => {
 }
 
 // 为输入框绑定事件
-smde.codemirror.on("change", function(){
+smde.codemirror.on("change", function () {
     isDocChanged = true && (originalContent !== smde.value())
     const content = smde.value()
     rendererMarkDownToHtml(content)
@@ -80,7 +84,7 @@ smde.codemirror.on("change", function(){
     mainProcess.isDocumentEditedWindows(isDocChanged)
     saveMarkdownButton.disabled = !isDocChanged
 });
-smde.codemirror.on("contextmenu", function(e){
+smde.codemirror.on("contextmenu", function (e) {
     const mdContextMenu = Menu.buildFromTemplate(contextMenuTemplate)
     mdContextMenu.popup()
 });
@@ -192,10 +196,10 @@ const updateUserInterface = (isEdited) => {
 }
 
 // 将html内容保存为文件
-saveHtmlButton.addEventListener('click', () => {
-    saveMarkdownButton.disabled = !isDocChanged
-    mainProcess.saveHtml(currentWindow, htmlView.innerHTML)
-})
+// saveHtmlButton.addEventListener('click', () => {
+//     saveMarkdownButton.disabled = !isDocChanged
+//     mainProcess.saveHtml(currentWindow, htmlView.innerHTML)
+// })
 
 // 将markdown文件保存下来
 saveMarkdownButton.addEventListener('click', () => {
@@ -207,14 +211,14 @@ saveMarkdownButton.addEventListener('click', () => {
 })
 
 // 回滚
-revertButton.addEventListener('click', () => {
-    isDocChanged = false
-    markdownView.value = originalContent
-    updateUserInterface(false)
-    mainProcess.isDocumentEditedWindows(false)
-    rendererMarkDownToHtml(originalContent)
-    saveMarkdownButton.disabled = !isDocChanged
-})
+// revertButton.addEventListener('click', () => {
+//     isDocChanged = false
+//     markdownView.value = originalContent
+//     updateUserInterface(false)
+//     mainProcess.isDocumentEditedWindows(false)
+//     rendererMarkDownToHtml(originalContent)
+//     saveMarkdownButton.disabled = !isDocChanged
+// })
 
 // 拖拽文件
 document.addEventListener('dragstart', e => e.preventDefault());
@@ -232,7 +236,7 @@ const fileTypeIsSupported = (file) => {
     // console.log(file)
     return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', ''].includes(file.type)
 }
-smde.codemirror.on("dragover", function(editor,e){
+smde.codemirror.on("dragover", function (editor, e) {
     const file = getDraggedFile(e)
     if (fileTypeIsSupported(file)) {
         markdownView.classList.add('drag-over')
@@ -240,7 +244,7 @@ smde.codemirror.on("dragover", function(editor,e){
         markdownView.classList.add('drag-error')
     }
 });
-smde.codemirror.on("drop", function(editor,e){
+smde.codemirror.on("drop", function (editor, e) {
     const file = getDroppedFile(e)
     var df = e.dataTransfer
     // 文件对象数组

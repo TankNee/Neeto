@@ -6,38 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Neeto</title>
-    
+
     <link rel="stylesheet" href="../../css/code.css">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.css"
         integrity="sha384-9tPv11A+glH/on/wEu99NVwDPwkMQESOocs/ZGXPoIiLE8MU/qkqUcZ3zzL+6DuH" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="../../css/katex.min.css">
     <link rel="stylesheet" href="../../css/simplemde.min.css">
     <link rel="stylesheet" href="../../css/defaultStyle.css">
+    <!-- <link rel="stylesheet" href="../../css/fonts/font-awesome.min.css"> -->
     <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/header.css">
     <!-- <script src="../../highlight.js"></script> -->
+
 </head>
+<header>
+    <section class="menu_bar">
+        <div class="tool_head">
+            <img src="../../../assets/images/neeto_icon.png" class="icon">
+            <span>
+                Neeto
+            </span>
+        </div>
+        <div class="main_head">
+            <div class="left_part">
+                <button class="menu_btn" id="menu_file">文件</button>
+            </div>
+            <div class="right_part">
+                <button class="menu_btn" id="menu_minize">
+                    <X/button> <button class="menu_btn" id="menu_win">
+                </button>
+                <button class="menu_btn" id="menu_close"></button>
+            </div>
+        </div>
+
+    </section>
+</header>
 
 <body>
-    <!-- <h1>Hello World</h1> -->
-    <!-- 顶部按钮栏 -->
-    <section class="controls">
-        <button id="new_file">新建</button>
-        <button id="open_file">打开</button>
-        <button id="save_markdown" disabled>保存</button>
-        <button id="save_html">保存为HTML</button>
-        <button id="revert">回退</button>
-        <button id="show_file" disabled>展示</button>
-        <button id="open_in_default" disabled>在默认浏览器打开</button>
+
+    <section class="container">
+        <!-- 侧边按钮栏 -->
+        <section class="controls">
+            <div class="top_part">
+                <button class="btn_icon btn-right" data-btn="新建文件" id="new_file"></button>
+                <button class="btn_icon btn-right" data-btn="打开文件" id="files"></button>
+                <button class="btn_icon btn-right" data-btn="保存文件" id="save"></button>
+                <button class="btn_icon btn-right" data-btn="云端设置"" id=" cloud"></button>
+            </div>
+            <div class="bottom_part">
+                <button class="btn_icon btn-right" data-btn="设置选项" id="setting"></button>
+            </div>
+
+
+
+
+            <!--             
+            <button id="new_file">新建</button>
+            <button id="open_file">打开</button>
+            <button id="save_markdown" disabled>保存</button>
+            <button id="save_html">保存为HTML</button>
+            <button id="revert">回退</button>
+            <button id="show_file" disabled>展示</button>
+            <button id="open_in_default" disabled>在默认浏览器打开</button> -->
+
+
+        </section>
+        <!-- 内容显示区域 -->
+        <section class="content">
+            <label for="markdown" hidden>MarkDown Content</label>
+            <div class="mde">
+                <textarea class="raw_markdown" id="markdown" cols="30" rows="10"></textarea>
+            </div>
+
+            <div class="renderer_html" id="html"></div>
+        </section>
     </section>
 
-    <section class="content">
-        <label for="markdown" hidden>MarkDown Content</label>
-        <div class="mde">
-            <textarea class="raw_markdown" id="markdown" cols="30" rows="10"></textarea>
-        </div>
-        
-        <div class="renderer_html" id="html"></div>
-    </section>
 </body>
 <script>
     // ../表示上一层文件夹，并且是可以叠加的

@@ -16,7 +16,8 @@ body {
     margin: 0;
     padding: 0;
     position: absolute;
-    max-height: 100%;
+    -webkit-app-region: no-drag
+    /* max-height: 100%; */
 }
 
 body, input {
@@ -28,48 +29,146 @@ textarea, input, div, button {
     margin: 0;
 }
 
-.controls {
-    background-color: rgb(217, 241, 238);
-    padding: 10px;
-    /* position: fixed; */
-}
-
-button {
-    font-size: 14px;
-    background-color: rgb(181, 220, 216);
-    border: none;
-    padding: 0.5em 1em;
-}
-
-button:hover {
-    background-color: rgb(156, 198, 192);
-}
-
-button:active {
-    background-color: rgb(144, 182, 177);
-}
-
-button:disabled {
-    background-color: rgb(196, 204, 202);
-}
 
 .container {
     display: flex;
+    height: 100%;
+    width: 100%;
+    
+}
+
+.controls {
+    display: flex;
+    min-width: 8%;
     flex-direction: column;
-    min-height: 100vh;
-    min-width: 100vw;
-    position: relative;
+    background-color: white;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 10px 15px #84A1A8;
+    z-index: 2;
+    /* border-right: 1px solid gray; */
+    /* position: fixed; */
 }
 
 .content {
-    height: 100vh;
+    min-width: 92%;
+    height: 100%;
     display: flex;
     /* position: fixed; */
+}
+
+.controls .top_part {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.controls .bottom_part {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+button {
+    border: none;
+    -webkit-app-region: no-drag
+}
+
+.btn_icon {
+    background-repeat: no-repeat;
+    height: 35px;
+    width: 35px;
+    background-color: transparent;
+    background-size: 100% 100%;
+    margin: 20px 0px;
+}
+
+.btn_icon:before, .btn_icon:after {
+    opacity: 0;
+    /*透明度为完全透明*/
+    position: absolute;
+    z-index: 1000;
+    /*设为最上层*/
+    /*鼠标放上元素上时的动画，鼠标放上后效果在.tip-*:hover:before, .tip-*:hover:after中设置;
+    0.3s:规定完成过渡效果需要多少秒或毫秒,ease:规定慢速开始，然后变快，然后慢速结束的过渡效果*/
+    transition: 0.3s ease;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+}
+
+.btn_icon:before {
+    content: '';
+    border: 6px solid transparent;
+}
+
+.btn_icon:after {
+    content: attr(data-btn);
+    /*后去要提示的文本*/
+    padding: 8px;
+    white-space: nowrap;
+    /*强制不换行*/
+    background-color: rgb(206,232,250);
+    /*提示框背景颜色*/
+    color: rgb(45,82,124);
+    /*提示字体颜色*/
+    margin-left: 30px;
+    margin-top: -17px;
+    border-radius: 5px;
+}
+
+.btn_icon:hover:before, .btn_icon:hover:after {
+    opacity: 1;
+    /*鼠标放上时透明度为完全显示*/
+    z-index: 1000;
+}
+
+
+
+
+#new_file {
+    background-image: url(../../assets/images/new.png);
+}
+
+#new_file:hover {
+    background-image: url(../../assets/images/new_hover.png);
+}
+
+#files {
+    background-image: url(../../assets/images/files.png);
+}
+
+#files:hover {
+    background-image: url(../../assets/images/files_hover.png);
+}
+
+#save {
+    background-image: url(../../assets/images/save.png);
+}
+
+#save:hover {
+    background-image: url(../../assets/images/save_hover.png);
+}
+
+#cloud {
+    background-image: url(../../assets/images/cloud.png);
+}
+
+#cloud:hover {
+    background-image: url(../../assets/images/cloud_hover.png);
+}
+
+#setting {
+    background-image: url(../../assets/images/settings.png);
+}
+
+#setting:hover {
+    background-image: url(../../assets/images/settings_hover.png);
 }
 
 .raw_markdown, .renderer_html {
     /* min-height: 100%; */
-    height: 93%;
+    height: 100%;
     max-width: 50%;
     width: 50%;
     flex-grow: 1;
@@ -91,7 +190,7 @@ button:disabled {
     color: rgb(178,204,214);
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; */
 }
-
+/* 
 .CodeMirror-scroll .drag-over {
     background-color: rgb(181, 220, 216);
     border-color: rgb(75, 160, 151);
@@ -100,7 +199,7 @@ button:disabled {
 .CodeMirror-scroll .drag-error {
     background-color: rgb(170, 57, 57, 1);
     border-color: rgb(255, 170, 170, 1);
-}
+} */
 
 /*滚动条整体样式*/
 
@@ -126,8 +225,8 @@ button:disabled {
 }
 
 .CodeMirror {
-    height: 87%;
-    border: 1px solid #ddd;
+    height: 100%;
+    border: none;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     padding: 30px 20px;
@@ -135,4 +234,23 @@ button:disabled {
     overflow-y: hidden;
     font: inherit;
     z-index: 1;
+    font-family: "webfont" !important;
+    font-size: 16px;
+    font-style: normal;
+}
+
+.editor-toolbar {
+    border: none;
+}
+
+@font-face {
+    font-family: 'webfont';
+    font-display: swap;
+    src: url('https://at.alicdn.com/t/webfont_a0llrqxj12k.eot');
+    /* IE9*/
+    src: url('https://at.alicdn.com/t/webfont_a0llrqxj12k.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('https://at.alicdn.com/t/webfont_a0llrqxj12k.woff2') format('woff2'), url('https://at.alicdn.com/t/webfont_a0llrqxj12k.woff') format('woff'), /* chrome、firefox */
+    url('https://at.alicdn.com/t/webfont_a0llrqxj12k.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('https://at.alicdn.com/t/webfont_a0llrqxj12k.svg#Alibaba-PuHuiTi-Regular') format('svg');
+    /* iOS 4.1- */
 }

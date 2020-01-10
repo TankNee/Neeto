@@ -4,7 +4,7 @@
 
 ### ScreenShot：
 
-<img src="https://img.tanknee.cn/blogpicbed/2020/01/20200107f0a52087636f3.png"/>
+<img src="https://img.tanknee.cn/blogpicbed/2020/01/20200110895f14bb25c77.png" alt="1.0.5"/>
 
 ### LaTex公式演示：
 

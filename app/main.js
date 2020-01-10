@@ -1,7 +1,7 @@
 const electron = require('electron')
 const fs = require('fs')
 
-const { app, BrowserWindow, dialog, Menu } = electron
+const { app, BrowserWindow, dialog, Menu, globalShortcut } = electron
 const applicationMenu = require('./application_menu')
 
 let mainWindow = null;
@@ -18,17 +18,27 @@ global.baseConfig = {
 }
 
 app.on('ready', () => {
-    Menu.setApplicationMenu(applicationMenu)
-    creatWindow();
+    let curwindow = creatWindow();
+    globalShortcut.register('CommandOrControl+R', () => {
+        curwindow.webContents.reload()
+    })
+    globalShortcut.register('F3', () => {
+        curwindow.webContents.openDevTools()
+    })
+    curwindow.webContents.openDevTools()
+    
 })
 app.on('will-finish-launching', () => {
     // 外界触发的文件打开事件
     app.on('open-file', (e, file) => {
         const win = creatWindow()
         win.once('ready-to-show', () => {
-            openFile(win, file)
+            openFile(win, file);
         })
     })
+})
+app.on('will-quit',()=>{
+    globalShortcut.unregister()
 })
 // 在集合中创建一个新的窗口
 const creatWindow = exports.creatWindow = () => {
@@ -38,11 +48,13 @@ const creatWindow = exports.creatWindow = () => {
         webPreferences: {
             nodeIntegration: true
         },
-        show: false
+        show: false,
+        titleBarStyle: 'hidden',
+        frame: false,
     })
     newWindow.loadFile('app/pages/index/index.html')
     // newWindow.loadFile('app/pages/editor/editor.html')
-    
+
     newWindow.once('ready-to-show', () => {
         newWindow.show();
     })
@@ -61,7 +73,7 @@ const creatWindow = exports.creatWindow = () => {
                 defaultId: 0,
                 cancelId: 1
             })
-            result.then(res =>{
+            result.then(res => {
                 if (res.response === 0) {
                     newWindow.destroy()
                 }
@@ -106,7 +118,7 @@ const openFile = exports.openFile = (targetWindow, file) => {
     app.addRecentDocument(file)
     targetWindow.setRepresentedFilename(file)
     // 开启文件监视器
-    startWatchingFile(targetWindow,file)
+    startWatchingFile(targetWindow, file)
     // 向渲染进程发送消息
     targetWindow.webContents.send('file-opened', file, content);
 }
@@ -171,7 +183,7 @@ const startWatchingFile = (targetWindow, file) => {
     const watcher = fs.watch(file, (e) => {
         if (e === 'change') {
             console.log(1)
-            const content = fs.readFileSync(file,'utf-8')
+            const content = fs.readFileSync(file, 'utf-8')
             console.log('main.js:')
             console.log(content)
             targetWindow.webContents.send('file-changed', file, content)
