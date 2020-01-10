@@ -1,4 +1,4 @@
-## A Simple Markdown Editer
+## A Markdown Editor
 
 **Developing...**
 
