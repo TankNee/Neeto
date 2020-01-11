@@ -36,17 +36,18 @@ textarea, input, div, button {
     width: 100%;
     top: 30px;
     position: fixed;
+    
 }
 
 .controls {
     display: flex;
     min-width: 8%;
     flex-direction: column;
-    background-color: white;
+    background-color: rgb(250,250,250);
     padding: 10px;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0px 10px 15px #84A1A8;
+    /* box-shadow: 0px 10px 15px #84A1A8; */
     z-index: 2;
     /* border-right: 1px solid gray; */
     /* position: fixed; */
@@ -56,8 +57,17 @@ textarea, input, div, button {
     min-width: 92%;
     height: 100%;
     display: flex;
+    background-color: rgb(255,255,255);
     /* position: fixed; */
 }
+.section{
+    visibility: hidden;
+}
+
+.section.show{
+    visibility: visible;
+}
+
 
 .controls .top_part {
     display: flex;

@@ -1,0 +1,48 @@
+<section class="menu_bar">
+    <div class="tool_head">
+        <img src="../../../assets/images/neeto_icon.png" class="icon" id="icon_img">
+    </div>
+    <div class="main_head">
+        <div class="left_part">
+            <div class="file mdui-container">
+                <button class="menu_btn mdui-ripple" id="menu_file" mdui-menu="{target: '#file_menu'}">文件</button>
+                <ul class="mdui-menu" id="file_menu" style="z-index: 999999;">
+                    <li class="mdui-menu-item" id="save_html">
+                        <a href="javascript:;" class="mdui-ripple">
+                            <i class="mdui-menu-item-icon mdui-icon material-icons">save</i>保存HTML
+                        </a>
+                    </li>
+                    <li class="mdui-menu-item">
+                        <a href="javascript:;" class="mdui-ripple">
+                            <i class="mdui-menu-item-icon mdui-icon material-icons">folder_open</i>打开
+                        </a>
+                    </li>
+                    <!-- <li class="mdui-divider"></li> -->
+                </ul>
+            </div>
+            <div class="edit mdui-container">
+                <button class="menu_btn mdui-ripple" id="menu_file" mdui-menu="{target: '#edit_menu'}">编辑</button>
+                <ul class="mdui-menu" id="edit_menu" style="z-index: 999999;">
+                    <li class="mdui-menu-item" id="revert">
+                        <a href="javascript:;" class="mdui-ripple">
+                            <i class="mdui-menu-item-icon mdui-icon material-icons">arrow_back</i>回退
+                        </a>
+                    </li>
+                    <li class="mdui-menu-item">
+                        <a href="javascript:;" class="mdui-ripple">
+                            <i class="mdui-menu-item-icon mdui-icon material-icons">arrow_forward</i>恢复
+                        </a>
+                    </li>
+                    <!-- <li class="mdui-divider"></li> -->
+                </ul>
+            </div>
+        </div>
+        <div class="middle_part" id="file_name">Neeto</div>
+        <div class="right_part">
+            <button class="menu_btn" id="menu_minimize"></button>
+            <button class="menu_btn" id="menu_win"></button>
+            <button class="menu_btn" id="menu_close"></button>
+        </div>
+    </div>
+
+</section>

@@ -1,10 +1,10 @@
 const electron = require('electron')
 const fs = require('fs')
+const path = require('path')
+const url = require('url')
 
-const { app, BrowserWindow, dialog, Menu, globalShortcut } = electron
-const applicationMenu = require('./application_menu')
+const { app, BrowserWindow, dialog, Menu, globalShortcut, ipcMain } = electron
 
-let mainWindow = null;
 let isDocumentEdited_win = false;
 
 // 窗口集合
@@ -25,8 +25,8 @@ app.on('ready', () => {
     globalShortcut.register('CommandOrControl+Shift+I', () => {
         curwindow.webContents.openDevTools()
     })
-    curwindow.webContents.openDevTools()
-    
+    // curwindow.webContents.openDevTools()
+
 })
 app.on('will-finish-launching', () => {
     // 外界触发的文件打开事件
@@ -37,13 +37,13 @@ app.on('will-finish-launching', () => {
         })
     })
 })
-app.on('will-quit',()=>{
+app.on('will-quit', () => {
     globalShortcut.unregister()
 })
 // 在集合中创建一个新的窗口
 const creatWindow = exports.creatWindow = () => {
     let newWindow = new BrowserWindow({
-        width: 800,
+        width: 1000,
         height: 600,
         webPreferences: {
             nodeIntegration: true
@@ -53,6 +53,8 @@ const creatWindow = exports.creatWindow = () => {
         frame: false,
     })
     newWindow.loadFile('app/pages/index/index.html')
+    // newWindow.loadFile('app/pages/cloud/cloud.html')
+
     // newWindow.loadFile('app/pages/editor/editor.html')
 
     newWindow.once('ready-to-show', () => {
@@ -214,3 +216,35 @@ const isDocumentEditedWindows = exports.isDocumentEditedWindows = (isEdited) => 
     isDocumentEdited_win = isEdited;
     return isDocumentEdited_win;
 }
+/**
+ * 页面切换
+ */
+const switchPages = exports.switchPages = (targetWindow, htmlFilePath) => {
+    console.log(htmlFilePath)
+    console.log(path.join(__dirname, pagePath))
+    console.log(url.format({
+        pathname: path.join(__dirname, pagePath),
+        protocol: 'file:',
+        slashes: true
+    }))
+    // targetWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, pagePath),
+    //     protocol: 'file:',
+    //     slashes: true
+    // }))
+    targetWindow.webContents.loadURL(url.format({
+        pathname: path.join(__dirname, pagePath),
+        protocol: 'file:',
+        slashes: true
+    }))
+    // targetWindow.loadURL('app/pages/cloud/cloud.html')
+    // targetWindow.reload()
+}
+ipcMain.on('switch-to-cloud', (targetWindow, pagePath) => {
+    console.log(pagePath)
+    targetWindow.loadURL(url.format({
+        pathname: path.join(__dirname, pagePath),
+        protocol: 'file:',
+        slashes: true
+    }))
+})

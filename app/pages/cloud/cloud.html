@@ -5,18 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Neeto</title>
-
-    <link rel="stylesheet" href="../../css/code.css">
-    <link rel="stylesheet" href="../../css/katex.min.css">
-    <link rel="stylesheet" href="../../css/simplemde.min.css">
-    <link rel="stylesheet" href="../../css/defaultStyle.css">
+    <title>Cloud</title>
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/mdui.min.css">
     <script src="../../js/mdui.min.js"></script>
-    <!-- <script src="../../js/jquery-3.4.1.js"></script> -->
-
 </head>
 <header>
     <section class="menu_bar">
@@ -65,12 +58,11 @@
                 <button class="menu_btn" id="menu_close"></button>
             </div>
         </div>
-    
+
     </section>
 </header>
 
 <body>
-
     <section class="container">
         <!-- 侧边按钮栏 -->
         <section class="controls">
@@ -84,25 +76,21 @@
                 <button class="btn_icon btn-right" data-btn="设置选项" id="setting"></button>
             </div>
         </section>
-        <!-- 编辑器内容显示区域 -->
-        <section class="section content show" id="content">
+        <!-- 内容显示区域 -->
+        <section class="content">
             <label for="markdown" hidden>MarkDown Content</label>
             <div class="mde">
                 <textarea class="raw_markdown" id="markdown" cols="30" rows="10" hidden></textarea>
             </div>
+
             <div class="renderer_html" id="html"></div>
         </section>
-        <!-- 云端设置显示区域 -->
-        <section class="section content cloud_content" id="cloud_setting">
-
-        </section>
     </section>
-
 </body>
 <script>
-    // ../表示上一层文件夹，并且是可以叠加的
-    require('../../renderer.js')
-    require('./index.js')
+     require('../../renderer.js')
+    require('./cloud.js')
+
 </script>
 
 </html>
