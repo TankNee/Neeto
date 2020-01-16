@@ -9,7 +9,7 @@ const showdownKatex = require('showdown-katex')
 const SimpleMde = require('simplemde')
 const mdui = require('mdui')
 const $ = require('jquery')
-
+const lightTip = require('../../js/common/ui/LightTip')
 // 几个状态参量
 let filePath = null;
 let originalContent = '';
@@ -80,7 +80,6 @@ smde.codemirror.on("change", function () {
     updateUserInterface(isDocChanged);
     mainProcess.isDocumentEditedWindows(isDocChanged)
     saveMarkdownButton.disabled = !isDocChanged
-    console.log(aList)
 });
 /**
  * 监听右键事件
@@ -117,7 +116,7 @@ smde.codemirror.on('scroll', (editor, e) => {
     console.log(smde.codemirror.getScrollInfo())
     // htmlView.animate({scrollTop: smde.codemirror.getScrollInfo()},800)
     // console.log(htmlView..an)
-    
+
 })
 
 htmlView.addEventListener('click', (e) => {
@@ -135,6 +134,9 @@ saveMarkdownButton.addEventListener('click', () => {
     updateUserInterface(isDocChanged)
     mainProcess.isDocumentEditedWindows(isDocChanged)
     mainProcess.saveMarkdown(currentWindow, filePath, smde.value())
+    // lightTip.success('保存成功',1000)
+    // $.lightTip.success('保存成功', 1000);
+    new LightTip().success('保存成功', 1000);
 })
 
 // 回滚

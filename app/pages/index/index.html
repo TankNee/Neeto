@@ -7,13 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Neeto</title>
 
-    <link rel="stylesheet" href="../../css/code.css">
-    <link rel="stylesheet" href="../../css/katex.min.css">
+    
+    <!-- <link rel="stylesheet" href="../../css/katex.min.css">
     <link rel="stylesheet" href="../../css/simplemde.min.css">
+    <link rel="stylesheet" href="../../css/mdui.min.css"> -->
+    <link rel="stylesheet" href="../../css/external/katex.min.css">
+    <link rel="stylesheet" href="../../css/external/simplemde.min.css">
+    <link rel="stylesheet" href="../../css/external/mdui.min.css">
+
+    <link rel="stylesheet" href="../../css/code.css">
     <link rel="stylesheet" href="../../css/defaultStyle.css">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/header.css">
-    <link rel="stylesheet" href="../../css/mdui.min.css">
     <link rel="stylesheet" href="../../css/common/ui.css">
     <script src="../../js/plugin/jquery.js"></script>
     <script src="../../js/common/all.js"></script>
@@ -98,16 +103,50 @@
         <!-- 云端设置显示区域 -->
         <section class="section content cloud_content" id="cloud_setting">
             <div class="ui-tab-tabs default-tabs" id="cloud_setting_tab">
-                <a href="" class="ui-tab-tab">基本设置</a>
-                <a href="" class="ui-tab-tab checked">上传设置</a>
+                <a href="javascript:" class="ui-tab-tab checked" id="tab_setting_basic">基本设置</a>
+                <a href="javascript:" class="ui-tab-tab" id="tab_setting_upload">上传设置</a>
+            </div>
+            <div class="ui-tab-contents">
+                <div class="ui-tab-content checked" id="tab_setting_basic_content"></div>
+                <div class="ui-tab-content" id="tab_setting_upload_content"></div>
             </div>
         </section>
 
         <!-- 设置界面显示区域 -->
         <section class="section content setting_content" id="setting">
             <div class="ui-tab-tabs default-tabs" id="cloud_setting_tab">
-                <a href="" class="ui-tab-tab">编辑器设置</a>
-                <a href="" class="ui-tab-tab checked">图床设置</a>
+                <a href="javascript:" class="ui-tab-tab checked" id="tab_setting_editor">编辑器设置</a>
+                <a href="javascript:" class="ui-tab-tab" id="tab_setting_picbed">图床设置</a>
+            </div>
+            <div class="ui-tab-contents">
+                <div class="ui-tab-content checked" id="tab_setting_editor_content">
+                    <section class="neeto-setting_content">
+                        <input class="ui-input">
+                    </section>
+                </div>
+                <div class="ui-tab-content" id="tab_setting_picbed_content">
+                    <div class="neeto-setting_content show">
+                        <div class="setting_content_item">
+                            <span>图床名称:</span><span class="ui-input"><input></span>
+                        </div>
+                        <div class="setting_content_item">
+                            <span>图床地址:</span><span class="ui-input"><input></span>
+                        </div>
+                        <div class="setting_content_item">
+                            <span>图床token:</span><span class="ui-input"><input></span>
+                        </div>
+                        <div class="setting_content_item">
+                            <span>键值名:</span><span class="ui-input"><input></span>
+                        </div>
+                        <div class="setting_content_item">
+                            <span>URL所在的标签:</span><span class="ui-input"><input></span>
+                        </div>
+                        <div class="setting_content_item">
+                            <a class="ui-button ui-button-primary" role="button" style="width: 100%;">确认</a>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
         </section>
     </section>

@@ -69,6 +69,15 @@ section {
     background-color: rgb(255, 255, 255);
 }
 
+.cloud_content, .setting_content {
+    display: flex;
+    flex-direction: column;
+}
+
+.ui-tab-contents {
+    margin-left: 30px;
+}
+
 .controls .top_part {
     display: flex;
     flex-direction: column;
@@ -207,16 +216,6 @@ button {
     max-height: 100%;
     flex-direction: column;
 }
-/* 
-.CodeMirror-scroll .drag-over {
-    background-color: rgb(181, 220, 216);
-    border-color: rgb(75, 160, 151);
-}
-
-.CodeMirror-scroll .drag-error {
-    background-color: rgb(170, 57, 57, 1);
-    border-color: rgb(255, 170, 170, 1);
-} */
 
 /*滚动条整体样式*/
 
@@ -242,6 +241,30 @@ button {
     background: transparent;
 }
 
+.neeto-setting_content{
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    /* margin-left: 100px; */
+}
+.neeto-setting_content .setting_content_item{
+    margin: 20px;
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30vh;
+    
+}
+.neeto-setting_content .setting_content_item span{
+    /* margin-right: 30px; */
+}
+
+
+
 .CodeMirror {
     height: 100%;
     border: none;
@@ -261,13 +284,21 @@ button {
     border: none;
 }
 
-
-.ui-tab-tabs.default-tabs{
+.ui-tab-tabs.default-tabs {
     width: 100%;
 }
+
 .ui-tab-tab {
     margin-left: 30px;
 }
+
+.ui-lightip {
+    padding-bottom: 30px;
+}
+
+
+
+
 
 @font-face {
     font-family: 'webfont';

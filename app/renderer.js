@@ -104,7 +104,9 @@ closeBtn.addEventListener('click', (e) => {
 
 // 打开文件
 openFileButton.addEventListener('click', () => {
-    mainProcess.getFileFromUser(currentWindow);
+    mainProcess.getFileFromUser(currentWindow)
+    hidePage()
+    content.classList.add('show')
 })
 htmlView.addEventListener('click', (e) => {
     if (e.target.href) {
