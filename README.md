@@ -2,7 +2,7 @@
 
 **Developing...**
 
-> Beta Version DownLoad: [Beta Download]("https://pan.tanknee.cn/index.php?share/folder&user=1&sid=beiaxBjr")
+> Beta Version DownLoad: [Beta Download](https://pan.tanknee.cn/index.php?share/folder&user=1&sid=beiaxBjr)
 
 > There is no guarantee that there are no fatal bugs in this version. Only experience new functions can be determined
 ### ScreenShot
