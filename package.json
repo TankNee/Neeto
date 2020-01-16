@@ -9,7 +9,8 @@
         "package-ia32": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10 --overwrite",
         "package-x64": "electron-packager . Neeto --out ./out --overwrite",
         "packafe-darwin": "electron-packager . 'Neeto' --platform=darwin --arch=x64 --out=./out --asar --app-version=1.0.0 --overwrite",
-        "package-all": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10 --overwrite && electron-packager . Neeto --out ./out --overwrite && electron-packager . 'Neeto' --platform=darwin --arch=x64 --out=./out --asar --app-version=1.0.0 --overwrite"
+        "package-all": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10 --overwrite && electron-packager . Neeto --out ./out --overwrite",
+        "git-push": "git push -u origin master && git push -u github master"
     },
     "author": "TankNee",
     "license": "Apache-2.0",
