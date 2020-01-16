@@ -14,7 +14,9 @@
     "author": "TankNee",
     "license": "Apache-2.0",
     "dependencies": {
+        "element": "^0.1.4",
         "fontawesome": "^5.6.3",
+        "jquery": "^3.4.1",
         "mdui": "^0.4.3",
         "showdown": "^1.9.1",
         "showdown-highlight": "^2.1.3",

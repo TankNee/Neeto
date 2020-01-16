@@ -29,21 +29,20 @@ textarea, input, div, button {
     margin: 0;
 }
 
-
 .container {
     display: flex;
     height: 100%;
     width: 100%;
     top: 30px;
     position: fixed;
-    
 }
 
 .controls {
+    visibility: visible;
     display: flex;
     min-width: 8%;
     flex-direction: column;
-    background-color: rgb(250,250,250);
+    background-color: rgb(250, 250, 250);
     padding: 10px;
     align-items: center;
     justify-content: space-between;
@@ -54,26 +53,28 @@ textarea, input, div, button {
 }
 
 .content {
+    /* position: fixed; */
+}
+
+section {
+    visibility: hidden;
+    width: 0%;
+}
+
+.section.show {
+    visibility: visible;
     min-width: 92%;
     height: 100%;
     display: flex;
-    background-color: rgb(255,255,255);
-    /* position: fixed; */
+    background-color: rgb(255, 255, 255);
 }
-.section{
-    visibility: hidden;
-}
-
-.section.show{
-    visibility: visible;
-}
-
 
 .controls .top_part {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .controls .bottom_part {
     display: flex;
     flex-direction: column;
@@ -121,9 +122,9 @@ button {
     padding: 7px;
     white-space: nowrap;
     /*强制不换行*/
-    background-color: rgb(206,232,250);
+    background-color: rgb(206, 232, 250);
     /*提示框背景颜色*/
-    color: rgb(45,82,124);
+    color: rgb(45, 82, 124);
     /*提示字体颜色*/
     margin-left: -35px;
     margin-top: -17px;
@@ -135,9 +136,6 @@ button {
     /*鼠标放上时透明度为完全显示*/
     z-index: 1000;
 }
-
-
-
 
 #new_file {
     background-image: url(../../assets/images/new.png);
@@ -175,11 +173,19 @@ button {
     background-image: none;
 }
 
-#setting {
+#user {
+    background-image: url(../../assets/images/user.png);
+}
+
+#user:hover {
+    background-image: none;
+}
+
+#setting_btn {
     background-image: url(../../assets/images/settings.png);
 }
 
-#setting:hover {
+#setting_btn:hover {
     /* background-image: url(../../assets/images/settings_hover.png); */
     background-image: none;
 }
@@ -201,8 +207,6 @@ button {
     max-height: 100%;
     flex-direction: column;
 }
-
-
 /* 
 .CodeMirror-scroll .drag-over {
     background-color: rgb(181, 220, 216);
@@ -226,7 +230,7 @@ button {
 ::-webkit-scrollbar-thumb {
     /* border-radius: 10px; */
     /* -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); */
-    background: rgb(206,232,250,1);
+    background: rgb(206, 232, 250, 1);
 }
 
 /*滚动条轨道*/
@@ -255,6 +259,14 @@ button {
 
 .editor-toolbar {
     border: none;
+}
+
+
+.ui-tab-tabs.default-tabs{
+    width: 100%;
+}
+.ui-tab-tab {
+    margin-left: 30px;
 }
 
 @font-face {

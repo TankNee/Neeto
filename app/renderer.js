@@ -32,6 +32,10 @@ const icon = document.querySelector('#icon_img')
 //内容显示页面
 const content = document.querySelector('#content')
 const cloudContent = document.querySelector('#cloud_setting')
+const settingBtn = document.querySelector('#setting_btn')
+const settingContent = document.querySelector('#setting')
+
+
 pages.push(content)
 pages.push(cloudContent)
 console.log(pages)
@@ -48,18 +52,7 @@ const closeBtn = document.querySelector("#menu_close")
 // 侧边栏按钮
 const cloudSetting = document.querySelector('#cloud')
 
-const contextMenuTemplate = [
-    {
-        label: 'Select All',
-        role: 'selectall'
-    },
-    {
-        label: 'Open File',
-        click() {
-            mainProcess.getFileFromUser(currentWindow)
-        }
-    }
-]
+
 // 获取当前窗体的引用
 const currentWindow = remote.getCurrentWindow();
 
@@ -121,17 +114,20 @@ htmlView.addEventListener('click', (e) => {
         shell.openExternal(e.target.href)
     }
 })
+// 跳转到云端设置界面
 cloudSetting.addEventListener('click', (e) => {
     hidePage()
     cloudContent.classList.add('show')
 })
-
+//跳转到设置界面
+settingBtn.addEventListener('click', (e) => {
+    hidePage()
+    settingContent.classList.add('show')
+})
 // 新建文件
 newFileButton.addEventListener('click', () => {
     hidePage()
     content.classList.add('show')
-    // content.innerHTML = loadContent(`${__dirname}/template/content.html`)
-    // currentWindow.webContents.send('page-reload')
 })
 ipcRenderer.on('page-reload', () => {
 

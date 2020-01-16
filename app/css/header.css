@@ -1,7 +1,6 @@
 header {
     -webkit-app-region: drag;
     
-    
 }
 
 header .menu_bar {
@@ -13,6 +12,7 @@ header .menu_bar {
     width: 100%;
     -webkit-app-region: drag;
     z-index: 1;
+    visibility: visible;
 }
 
 

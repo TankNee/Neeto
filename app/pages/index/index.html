@@ -14,8 +14,10 @@
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/mdui.min.css">
+    <link rel="stylesheet" href="../../css/common/ui.css">
+    <script src="../../js/plugin/jquery.js"></script>
+    <script src="../../js/common/all.js"></script>
     <script src="../../js/mdui.min.js"></script>
-    <!-- <script src="../../js/jquery-3.4.1.js"></script> -->
 
 </head>
 <header>
@@ -65,7 +67,7 @@
                 <button class="menu_btn" id="menu_close"></button>
             </div>
         </div>
-    
+
     </section>
 </header>
 
@@ -75,13 +77,14 @@
         <!-- 侧边按钮栏 -->
         <section class="controls">
             <div class="top_part">
-                <button class="btn_icon btn-right" data-btn="新建文件" id="new_file"></button>
+                <button class="btn_icon btn-right" data-btn="编辑文件" id="new_file"></button>
                 <button class="btn_icon btn-right" data-btn="打开文件" id="files"></button>
                 <button class="btn_icon btn-right" data-btn="保存文件" id="save"></button>
                 <button class="btn_icon btn-right" data-btn="云端设置"" id="cloud"></button>
             </div>
             <div class="bottom_part">
-                <button class="btn_icon btn-right" data-btn="设置选项" id="setting"></button>
+                <button class="btn_icon btn-right" data-btn="用户信息" id="user"></button>
+                <button class="btn_icon btn-right" data-btn="设置选项" id="setting_btn"></button>
             </div>
         </section>
         <!-- 编辑器内容显示区域 -->
@@ -94,7 +97,18 @@
         </section>
         <!-- 云端设置显示区域 -->
         <section class="section content cloud_content" id="cloud_setting">
+            <div class="ui-tab-tabs default-tabs" id="cloud_setting_tab">
+                <a href="" class="ui-tab-tab">基本设置</a>
+                <a href="" class="ui-tab-tab checked">上传设置</a>
+            </div>
+        </section>
 
+        <!-- 设置界面显示区域 -->
+        <section class="section content setting_content" id="setting">
+            <div class="ui-tab-tabs default-tabs" id="cloud_setting_tab">
+                <a href="" class="ui-tab-tab">编辑器设置</a>
+                <a href="" class="ui-tab-tab checked">图床设置</a>
+            </div>
         </section>
     </section>
 
@@ -103,6 +117,8 @@
     // ../表示上一层文件夹，并且是可以叠加的
     require('../../renderer.js')
     require('./index.js')
+    require('./cloud.js')
+    require('./setting.js')
 </script>
 
 </html>

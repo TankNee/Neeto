@@ -6,7 +6,7 @@
  * 英文换行 word-break:break-all;
  */
 
- .renderer_html {
+.renderer_html {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono';
 }
 
@@ -104,7 +104,7 @@
     color: rgb(165, 213, 93);
 }
 
-/* 三级标题修饰 请参考有实例的主题 */
+/* 三级标题修饰*/
 
 .renderer_html h3:after {}
 
@@ -144,7 +144,9 @@
     text-indent: 0;
     border-radius: 5px;
     color: #888;
-    box-shadow: #84A1A8 0px 10px 15px;
+    background-color: rgb(250,250,250);
+    border-left:4px solid #555555;
+    /* box-shadow: #84A1A8 0px 10px 15px; */
 }
 
 .renderer_html blockquote:before {
@@ -160,6 +162,7 @@
 /* 引用文字 */
 
 .renderer_html blockquote p {
+    
     display: inline;
 }
 
@@ -168,7 +171,7 @@
    */
 
 .renderer_html a {
-    color: rgb(206,232,250);
+    color: rgb(206, 232, 250);
     /* border-bottom: 1px solid #ff3502; */
     font-family: STHeitiSC-Light;
 }
@@ -202,12 +205,13 @@
    */
 
 .renderer_html hr {
-    height: 1px;
+    height: 2px;
     padding: 0;
     border: none;
     border-top: medium solidid #333;
     text-align: center;
-    background-image: linear-gradient(to right, rgba(248, 57, 41, 0), rgba(248, 57, 41, 0.75), rgba(248, 57, 41, 0));
+    background-color: #333;
+    /* background-image: linear-gradient(to right, rgba(248, 57, 41, 0), rgba(248, 57, 41, 0.75), rgba(248, 57, 41, 0)); */
 }
 
 /* 图片
@@ -303,14 +307,13 @@
 .renderer_html .inline-equation svg {}
 
 .renderer_html pre {
-    background-color: rgb(41, 45, 62);
+    background-color: rgb(250,250,250);
     align-items: center;
     padding: 10px;
-    border: 1px solid rgb(41, 45, 62);
     border-radius: 4px;
     margin: 10px 10px;
     font-weight: 300;
-    box-shadow: #84A1A8 0px 10px 15px;
+    box-shadow: rgb(230,230,230) 0px 10px 15px;
 }
 
 .renderer_html pre code {
@@ -362,7 +365,7 @@ tr {
 }
 
 tr:hover {
-    background: #cc0;
+    background: rgb(206,232,250);
 }
 
 td a {

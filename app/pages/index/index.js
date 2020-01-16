@@ -8,7 +8,7 @@ const path = require('path')
 const showdownKatex = require('showdown-katex')
 const SimpleMde = require('simplemde')
 const mdui = require('mdui')
-
+const $ = require('jquery')
 
 // 几个状态参量
 let filePath = null;
@@ -19,15 +19,21 @@ let baseConfig = {
     picBedUrl: 'https://pic.tanknee.cn/api/upload',
     testToken: 'bdaaa8a43a8e8e58ce46cd5aa38848d6'
 }
-// var smde = new SimpleMde({
-//     element: document.getElementById("markdown"),
-//     autoDownloadFontAwesome: true,
-//     status: false,
-//     toolbar: [
-//         "bold", "italic", "strikethrough", "heading", "code", "quote", "unordered-list",
-//         "ordered-list", "clean-block", "link", "image", "table", "horizontal-rule", "fullscreen", "guide"
-//     ]
-// })
+/**
+ * 右键菜单
+ */
+const contextMenuTemplate = [
+    {
+        label: 'Select All',
+        role: 'selectall'
+    },
+    {
+        label: 'Open File',
+        click() {
+            mainProcess.getFileFromUser(currentWindow)
+        }
+    }
+]
 
 const currentWindow = remote.getCurrentWindow();
 const markdownView = document.querySelector('.CodeMirror')
@@ -64,6 +70,9 @@ const rendererMarkDownToHtml = (markdown) => {
     });
     htmlView.innerHTML = converter.makeHtml(markdown)
 }
+/**
+ * 监听change事件
+ */
 smde.codemirror.on("change", function () {
     isDocChanged = true && (originalContent !== smde.value())
     const content = smde.value()
@@ -71,11 +80,46 @@ smde.codemirror.on("change", function () {
     updateUserInterface(isDocChanged);
     mainProcess.isDocumentEditedWindows(isDocChanged)
     saveMarkdownButton.disabled = !isDocChanged
+    console.log(aList)
 });
+/**
+ * 监听右键事件
+ */
 smde.codemirror.on("contextmenu", function (e) {
     const mdContextMenu = Menu.buildFromTemplate(contextMenuTemplate)
     mdContextMenu.popup()
 });
+/**
+ * 简单的实现代码补全功能
+ */
+smde.codemirror.on('inputRead', (editor, e) => {
+    if (e.text.length === 1) {
+        if (e.text[0] == '[') {
+            smde.codemirror.replaceSelection(']')
+        } else if (e.text[0] == '{') {
+            smde.codemirror.replaceSelection('}')
+        } else if (e.text[0] == '(') {
+            smde.codemirror.replaceSelection(')')
+        }
+    }
+
+})
+
+/**
+ * 实现同步滚动
+ */
+smde.codemirror.on('scroll', (editor, e) => {
+    // console.log(htmlView.animate({
+    //     scrollTop: markdownView
+    // },200).effect.scrollTop())
+    // console.log(e)
+    $('#html').scrollTop(smde.codemirror.getScrollInfo().top);
+    console.log(smde.codemirror.getScrollInfo())
+    // htmlView.animate({scrollTop: smde.codemirror.getScrollInfo()},800)
+    // console.log(htmlView..an)
+    
+})
+
 htmlView.addEventListener('click', (e) => {
     if (e.target.href) {
         // 阻止默认行为
