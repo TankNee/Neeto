@@ -25,6 +25,11 @@ app.on('ready', () => {
     globalShortcut.register('CommandOrControl+Shift+I', () => {
         curwindow.webContents.openDevTools()
     })
+    // readConfig()
+    console.log(global.baseConfig);
+    global.baseConfig = readConfig()
+    console.log(global.baseConfig);
+    
     // curwindow.webContents.openDevTools()
 
 })
@@ -189,12 +194,9 @@ const startWatchingFile = (targetWindow, file) => {
         if (e === 'change') {
             console.log(1)
             const content = fs.readFileSync(file, 'utf-8')
-            console.log('main.js:')
-            console.log(content)
             targetWindow.webContents.send('file-changed', file, content)
         }
     })
-
     openFiles.set(targetWindow, watcher)
 }
 /**
@@ -217,34 +219,11 @@ const isDocumentEditedWindows = exports.isDocumentEditedWindows = (isEdited) => 
     return isDocumentEdited_win;
 }
 /**
- * 页面切换
+ * 读取配置文件
+ * @returns {*} json 返回读取到的配置文件对象
  */
-const switchPages = exports.switchPages = (targetWindow, htmlFilePath) => {
-    console.log(htmlFilePath)
-    console.log(path.join(__dirname, pagePath))
-    console.log(url.format({
-        pathname: path.join(__dirname, pagePath),
-        protocol: 'file:',
-        slashes: true
-    }))
-    // targetWindow.loadURL(url.format({
-    //     pathname: path.join(__dirname, pagePath),
-    //     protocol: 'file:',
-    //     slashes: true
-    // }))
-    targetWindow.webContents.loadURL(url.format({
-        pathname: path.join(__dirname, pagePath),
-        protocol: 'file:',
-        slashes: true
-    }))
-    // targetWindow.loadURL('app/pages/cloud/cloud.html')
-    // targetWindow.reload()
+const readConfig = () => {
+    var data = fs.readFileSync(__dirname + '/config/config.json',"utf-8").toString()
+    let json = JSON.parse(data)
+    return json;
 }
-ipcMain.on('switch-to-cloud', (targetWindow, pagePath) => {
-    console.log(pagePath)
-    targetWindow.loadURL(url.format({
-        pathname: path.join(__dirname, pagePath),
-        protocol: 'file:',
-        slashes: true
-    }))
-})

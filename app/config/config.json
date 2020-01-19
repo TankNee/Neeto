@@ -1,0 +1,20 @@
+{
+    "setting": {
+        "editorSetting": {
+            "fontSize": "",
+            "isAutoSave": ""
+        },
+        "picBedSetting": {
+            "picBeds": {
+                "webPicBed": {
+                    "bedsName":"",
+                    "bedsUrl":"",
+                    "bedsToken":"",
+                    "bedsDataKey":"",
+                    "bedsDataTag":""
+                }
+            }
+        }
+    },
+    "cloudSetting":{}
+}

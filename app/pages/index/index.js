@@ -66,7 +66,9 @@ const rendererMarkDownToHtml = (markdown) => {
             }),
         ],
         tables: true,
-        tasklists: true
+        tasklists: true,
+        strikethrough: true,
+        ghCodeBlocks: true
     });
     htmlView.innerHTML = converter.makeHtml(markdown)
 }
@@ -200,8 +202,6 @@ smde.codemirror.on("drop", function (editor, e) {
                         console.log(res.data.url)
                         var tempCon = smde.value()
                         tempCon += finalUrl
-                        // smde.value().replace(finalUrl)
-                        // smde.replaceSelection(finalUrl)
                         codemir = smde.codemirror
                         codemir.doc.replaceSelection(finalUrl)
                         console.log(codemir)

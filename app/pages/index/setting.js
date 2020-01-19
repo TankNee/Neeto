@@ -1,3 +1,6 @@
+const $ = require('jquery')
+
+
 // 获取顶部标签
 const editorSetting = document.querySelector('#tab_setting_editor')
 const picbedSetting = document.querySelector('#tab_setting_picbed')
@@ -35,3 +38,5 @@ picbedSetting.addEventListener('click', (e) => {
     picbedSetting.classList.add('checked')
     picbedSettingContent.classList.add('checked')
 })
+
+// 获取用户的配置文件
