@@ -7,14 +7,14 @@
         "picBedSetting": {
             "picBeds": {
                 "webPicBed": {
-                    "bedsName":"",
-                    "bedsUrl":"",
-                    "bedsToken":"",
-                    "bedsDataKey":"",
-                    "bedsDataTag":""
+                    "bedsName": "lysky",
+                    "bedsUrl": "https://pic.tanknee.cn/api/upload",
+                    "bedsToken": "bdaaa8a43a8e8e58ce46cd5aa38848d6",
+                    "bedsDataKey": "123",
+                    "bedsDataTag": "12311231"
                 }
             }
         }
     },
-    "cloudSetting":{}
+    "cloudSetting": {}
 }

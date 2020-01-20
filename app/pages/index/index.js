@@ -14,10 +14,15 @@ const lightTip = require('../../js/common/ui/LightTip')
 let filePath = null;
 let originalContent = '';
 let isDocChanged = false
+// let baseConfig = {
+//     baseUrl: 'http://localhost:8080/api',
+//     picBedUrl: 'https://pic.tanknee.cn/api/upload',
+//     token: 'bdaaa8a43a8e8e58ce46cd5aa38848d6'
+// }
 let baseConfig = {
-    baseUrl: 'http://localhost:8080/api',
-    picBedUrl: 'https://pic.tanknee.cn/api/upload',
-    testToken: 'bdaaa8a43a8e8e58ce46cd5aa38848d6'
+    baseUrl: undefined,
+    picBedUrl: undefined,
+    token: undefined
 }
 /**
  * 右键菜单
@@ -36,7 +41,7 @@ const contextMenuTemplate = [
 ]
 
 const currentWindow = remote.getCurrentWindow();
-const markdownView = document.querySelector('.CodeMirror')
+const markdownView = document.querySelector('.CodeMirror-scroll')
 const htmlView = document.querySelector('#html')
 const saveMarkdownButton = document.querySelector('#save')
 const revertButton = document.querySelector('#revert')
@@ -110,15 +115,7 @@ smde.codemirror.on('inputRead', (editor, e) => {
  * 实现同步滚动
  */
 smde.codemirror.on('scroll', (editor, e) => {
-    // console.log(htmlView.animate({
-    //     scrollTop: markdownView
-    // },200).effect.scrollTop())
-    // console.log(e)
     $('#html').scrollTop(smde.codemirror.getScrollInfo().top);
-    console.log(smde.codemirror.getScrollInfo())
-    // htmlView.animate({scrollTop: smde.codemirror.getScrollInfo()},800)
-    // console.log(htmlView..an)
-
 })
 
 htmlView.addEventListener('click', (e) => {
@@ -136,9 +133,7 @@ saveMarkdownButton.addEventListener('click', () => {
     updateUserInterface(isDocChanged)
     mainProcess.isDocumentEditedWindows(isDocChanged)
     mainProcess.saveMarkdown(currentWindow, filePath, smde.value())
-    // lightTip.success('保存成功',1000)
-    // $.lightTip.success('保存成功', 1000);
-    new LightTip().success('保存成功', 1000);
+    new LightTip().success('保存成功', 2000);
 })
 
 // 回滚
@@ -148,7 +143,6 @@ revertButton.addEventListener('click', () => {
     updateUserInterface(false)
     mainProcess.isDocumentEditedWindows(false)
     rendererMarkDownToHtml(originalContent)
-    // saveMarkdownButton.disabled = !isDocChanged
 })
 // 拖拽文件
 document.addEventListener('dragstart', e => e.preventDefault());
@@ -157,11 +151,6 @@ document.addEventListener('dragleave', e => e.preventDefault());
 document.addEventListener('drop', e => e.preventDefault());
 smde.codemirror.on("dragover", function (editor, e) {
     const file = getDraggedFile(e)
-    if (fileTypeIsSupported(file)) {
-        markdownView.classList.add('drag-over')
-    } else {
-        markdownView.classList.add('drag-error')
-    }
 });
 smde.codemirror.on("drop", function (editor, e) {
     const file = getDroppedFile(e)
@@ -185,41 +174,73 @@ smde.codemirror.on("drop", function (editor, e) {
                 }
             }
             // 上传到图床
-            const urlResult = []
             dropFiles.forEach(file => {
                 const formdata = new FormData()
                 formdata.append('image', file)
-                fetch(baseConfig.picBedUrl, {
-                    method: 'post',
-                    body: formdata,
-                    headers: {
-                        token: baseConfig.testToken
-                    }
-                })
-                    .then(res => res.json())
-                    .then(res => {
-                        finalUrl = `<img src="${res.data.url}">`
-                        console.log(res.data.url)
-                        var tempCon = smde.value()
-                        tempCon += finalUrl
-                        codemir = smde.codemirror
-                        codemir.doc.replaceSelection(finalUrl)
-                        console.log(codemir)
-                        rendererMarkDownToHtml(smde.value())
-                        urlResult.push(res.data.url)
-                    })
+                console.log(baseConfig)
+                if (baseConfig.picBedUrl) {
+                    uploadToPicBeds(formdata, baseConfig.picBedUrl, baseConfig.token)
+                        .then(res => {
+                            console.log(res)
+                            var finalUrl = `<img src="${res}">`
+                            smde.codemirror.doc.replaceSelection(finalUrl)
+                            rendererMarkDownToHtml(smde.value())
+                            new LightTip().success('图床图片上传成功', 2000);
+                        })
+                        .catch(res => {
+                            console.log(res);
+                            new LightTip().error('图床图片上传失败，请检查图床配置', 4000);
+                            finalUrl = `![${file.name}](${file.path})`
+                            smde.codemirror.doc.replaceSelection(finalUrl)
+                            rendererMarkDownToHtml(smde.value())
+                        })
+
+                } else {
+                    var finalUrl = `![${file.name}](${file.path})`
+                    smde.codemirror.doc.replaceSelection(finalUrl)
+                    rendererMarkDownToHtml(smde.value())
+                    new LightTip().success('本地图片添加成功', 2000);
+
+
+                }
             });
-            console.log(urlResult)
         } else {
             mainProcess.openFile(currentWindow, file.path)
         }
     } else {
-        alert("这种文件暂时不支持编辑")
+        new LightTip().error('该文件类型暂时无法上传', 4000);
     }
     isDocChanged = false
     saveMarkdownButton.disabled = !isDocChanged
 });
-
+/**
+ * 将文件上传到图床
+ * @param {Object} formdata 图片文件对象
+ */
+const uploadToPicBeds = (formdata, picBedUrl, token = '') => {
+    return new Promise((resolve, reject) => {
+        fetch(picBedUrl, {
+            method: 'post',
+            body: formdata,
+            headers: {
+                token: token
+            }
+        })
+            .catch(res => {
+                reject(res)
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.code !== 200) {
+                    reject(res)
+                }
+                resolve(res.data.url)
+            })
+            .catch(res => {
+                reject(res)
+            })
+    })
+}
 
 
 
@@ -252,8 +273,18 @@ ipcRenderer.on('file-opened', (e, file, content) => {
 /**
  * 监听file-changed频道
  */
-ipcRenderer.on('file-changed', (e, file, content) => {
-    renderFile(file, content)
+ipcRenderer.on('file-changed', (e, file, content, type = 'markdownFile') => {
+    if (type === 'markdownFile') {
+        renderFile(file, content)
+    } else {
+        baseConfig.picBedUrl = content.setting.picBedSetting.picBeds.webPicBed.bedsUrl
+        baseConfig.token = content.setting.picBedSetting.picBeds.webPicBed.bedsToken
+        console.log(content);
+
+        console.log(baseConfig);
+
+    }
+
 })
 /**
  * 监听save-markdown频道
@@ -316,3 +347,9 @@ const renderFile = (file, content) => {
     mainProcess.isDocumentEditedWindows(isDocChanged)
     saveMarkdownButton.disabled = !isDocChanged
 }
+// 保存用户的配置文件
+ipcRenderer.on('iniConfig', (e, config) => {
+    console.log(config);
+    baseConfig.picBedUrl = config.setting.picBedSetting.picBeds.webPicBed.bedsUrl
+    baseConfig.token = config.setting.picBedSetting.picBeds.webPicBed.bedsToken
+})

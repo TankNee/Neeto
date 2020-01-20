@@ -323,15 +323,15 @@
 }
 
 .renderer_html p code, .renderer_html li code {
-    background-color: rgb(41, 45, 62);
+    background-color: rgb(240,240,240);
     align-items: center;
-    padding: 2px 7px;
-    border: 1px solid rgb(41, 45, 62);
+    padding: 3px 7px;
     border-radius: 4px;
-    margin: 2px 5px;
-    color: rgb(178, 204, 204);
+    margin: 10px 10px;
     font-weight: 300;
+    color: #d14;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    word-wrap: break-word;
 }
 
 .renderer_html li {

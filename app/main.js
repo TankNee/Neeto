@@ -11,7 +11,8 @@ let isDocumentEdited_win = false;
 const windows = new Set()
 // 打开的文件
 const openFiles = new Map()
-
+// 打开的窗口对配置文件的监视器
+const configWatchers = new Map()
 global.baseConfig = {
     baseUrl: 'http://localhost:8080/api',
     picBedUrl: 'https://pic.tanknee.cn/api/upload'
@@ -25,12 +26,9 @@ app.on('ready', () => {
     globalShortcut.register('CommandOrControl+Shift+I', () => {
         curwindow.webContents.openDevTools()
     })
-    // readConfig()
-    console.log(global.baseConfig);
-    global.baseConfig = readConfig()
-    console.log(global.baseConfig);
-    
-    // curwindow.webContents.openDevTools()
+    // global.baseConfig = readConfig()
+    // ipcMain.send('iniConfig',readConfig())
+
 
 })
 app.on('will-finish-launching', () => {
@@ -58,11 +56,12 @@ const creatWindow = exports.creatWindow = () => {
         frame: false,
     })
     newWindow.loadFile('app/pages/index/index.html')
-    // newWindow.loadFile('app/pages/cloud/cloud.html')
-
-    // newWindow.loadFile('app/pages/editor/editor.html')
 
     newWindow.once('ready-to-show', () => {
+        // console.log(readConfig(newWindow));
+        var config = readConfig(newWindow)
+
+        newWindow.webContents.send('iniConfig', (config))
         newWindow.show();
     })
     newWindow.on('close', (e) => {
@@ -187,17 +186,30 @@ const saveMarkdown = exports.saveMarkdown = (targetWindow, file, content) => {
  * 监控文件的活动
  * @param {*} targetWindow 
  * @param {*} file 
+ * @param {*} type
  */
-const startWatchingFile = (targetWindow, file) => {
+const startWatchingFile = (targetWindow, file, type = 'markdownFile') => {
     stopWatchingFile(targetWindow)
     const watcher = fs.watch(file, (e) => {
         if (e === 'change') {
-            console.log(1)
-            const content = fs.readFileSync(file, 'utf-8')
-            targetWindow.webContents.send('file-changed', file, content)
+            const content = fs.readFileSync(file, 'utf-8').toString()
+            // console.log(file)
+            console.log(type);
+            if (type === 'configFile') {
+                let json = readConfig(targetWindow)
+                targetWindow.webContents.send('file-changed', file, json, type)
+            }else{
+                targetWindow.webContents.send('file-changed', file, content, type)
+            }
+            
         }
     })
-    openFiles.set(targetWindow, watcher)
+    if (type === 'configFile') {
+        configWatchers.set(targetWindow, watcher)
+    } else {
+        openFiles.set(targetWindow, watcher)
+    }
+
 }
 /**
  * 停止文件监视器
@@ -205,6 +217,11 @@ const startWatchingFile = (targetWindow, file) => {
  */
 const stopWatchingFile = (targetWindow) => {
     // has方法要求传入一个键，然后检索这个键是否存在--键值对中键是唯一的，而值并不是唯一的
+    if (configWatchers.has(targetWindow)) {
+        console.log(openFiles.get(targetWindow))
+        configWatchers.get(targetWindow).close();// 停止文件监控器
+        configWatchers.delete(targetWindow);//删除与窗口相关的文件监控器
+    }
     if (openFiles.has(targetWindow)) {
         console.log(openFiles.get(targetWindow))
         openFiles.get(targetWindow).close();// 停止文件监控器
@@ -220,10 +237,14 @@ const isDocumentEditedWindows = exports.isDocumentEditedWindows = (isEdited) => 
 }
 /**
  * 读取配置文件
- * @returns {*} json 返回读取到的配置文件对象
+ * @param {windows} targetWindow 目标窗口
  */
-const readConfig = () => {
-    var data = fs.readFileSync(__dirname + '/config/config.json',"utf-8").toString()
+const readConfig = (targetWindow) => {
+    // 配置文件路径
+    var path = __dirname + '/config/config.json';
+    // 开启监视器
+    startWatchingFile(targetWindow, path, 'configFile')
+    var data = fs.readFileSync(path, "utf-8").toString()
     let json = JSON.parse(data)
     return json;
 }

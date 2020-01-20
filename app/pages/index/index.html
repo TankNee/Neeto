@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Neeto</title>
 
-    
+
     <!-- <link rel="stylesheet" href="../../css/katex.min.css">
     <link rel="stylesheet" href="../../css/simplemde.min.css">
     <link rel="stylesheet" href="../../css/mdui.min.css"> -->
@@ -85,7 +85,7 @@
                 <button class="btn_icon btn-right" data-btn="编辑文件" id="new_file"></button>
                 <button class="btn_icon btn-right" data-btn="打开文件" id="files"></button>
                 <button class="btn_icon btn-right" data-btn="保存文件" id="save"></button>
-                <button class="btn_icon btn-right" data-btn="云端设置"" id="cloud"></button>
+                <button class="btn_icon btn-right" data-btn="云端设置" id="cloud"></button>
             </div>
             <div class="bottom_part">
                 <button class="btn_icon btn-right" data-btn="用户信息" id="user"></button>
@@ -127,25 +127,25 @@
                 <div class="ui-tab-content" id="tab_setting_picbed_content">
                     <div class="neeto-setting_content show">
                         <div class="setting_content_item">
-                            <span>图床名称:</span><span class="ui-input"><input></span>
+                            <span>图床名称:</span><span class="ui-input" id="pic_name_input"><input></span>
                         </div>
                         <div class="setting_content_item">
-                            <span>图床地址:</span><span class="ui-input"><input></span>
+                            <span>图床地址:</span><span class="ui-input" id="pic_url_input"><input></span>
                         </div>
                         <div class="setting_content_item">
-                            <span>图床token:</span><span class="ui-input"><input></span>
+                            <span>图床token:</span><span class="ui-input" id="pic_token_input"><input></span>
                         </div>
                         <div class="setting_content_item">
-                            <span>键值名:</span><span class="ui-input"><input></span>
+                            <span>键值名:</span><span class="ui-input" id="pic_key_input"><input></span>
                         </div>
                         <div class="setting_content_item">
-                            <span>URL所在的标签:</span><span class="ui-input"><input></span>
+                            <span>URL所在的标签:</span><span class="ui-input" id="pic_tag_input"><input></span>
                         </div>
                         <div class="setting_content_item">
-                            <a class="ui-button ui-button-primary" role="button" style="width: 100%;">确认</a>
+                            <a class="ui-button ui-button-primary" role="button" style="width: 100%;" id="picSettingConfirmBtn">确认</a>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </section>
