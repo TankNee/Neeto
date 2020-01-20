@@ -2,6 +2,8 @@ const electron = require('electron')
 const fs = require('fs')
 const path = require('path')
 const url = require('url')
+const updater = require('./auto-updater')
+// import 'font-awesome/css/font-awesome.css'
 
 const { app, BrowserWindow, dialog, Menu, globalShortcut, ipcMain } = electron
 
@@ -17,7 +19,9 @@ global.baseConfig = {
     baseUrl: 'http://localhost:8080/api',
     picBedUrl: 'https://pic.tanknee.cn/api/upload'
 }
-
+if (require('electron-squirrel-startup')) {
+    return;
+}
 app.on('ready', () => {
     let curwindow = creatWindow();
     globalShortcut.register('CommandOrControl+R', () => {
@@ -26,16 +30,20 @@ app.on('ready', () => {
     globalShortcut.register('CommandOrControl+Shift+I', () => {
         curwindow.webContents.openDevTools()
     })
+    // updater.checkForUpdates()
+    console.log(app.getVersion());
+    
     // global.baseConfig = readConfig()
     // ipcMain.send('iniConfig',readConfig())
-
 
 })
 app.on('will-finish-launching', () => {
     // 外界触发的文件打开事件
     app.on('open-file', (e, file) => {
+        console.log(file)
         const win = creatWindow()
         win.once('ready-to-show', () => {
+            new LightTip().success('保存成功', 2000);
             openFile(win, file);
         })
     })
@@ -98,6 +106,7 @@ const creatWindow = exports.creatWindow = () => {
     windows.add(newWindow)
     return newWindow
 }
+
 
 const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
     const files = dialog.showOpenDialog(targetWindow, {
@@ -242,6 +251,8 @@ const isDocumentEditedWindows = exports.isDocumentEditedWindows = (isEdited) => 
 const readConfig = (targetWindow) => {
     // 配置文件路径
     var path = __dirname + '/config/config.json';
+    console.log(path);
+    
     // 开启监视器
     startWatchingFile(targetWindow, path, 'configFile')
     var data = fs.readFileSync(path, "utf-8").toString()

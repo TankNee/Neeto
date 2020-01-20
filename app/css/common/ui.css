@@ -1683,7 +1683,7 @@ input + .ui-placeholder {
   text-align: right; }
 
 :root .ui-dialog-footer {
-  max-height: 40px;
+  max-height: none;
   opacity: 1;
   -webkit-transition: max-height .2s, opacity .2s .1s;
   transition: max-height .2s, opacity .2s .1s;

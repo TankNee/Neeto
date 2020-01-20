@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/common/ui.css">
+    <link rel="stylesheet" href="../../css/font-awesome.css">
     <script src="../../js/plugin/jquery.js"></script>
     <script src="../../js/common/all.js"></script>
     <script src="../../js/mdui.min.js"></script>
@@ -88,7 +89,7 @@
                 <button class="btn_icon btn-right" data-btn="云端设置" id="cloud"></button>
             </div>
             <div class="bottom_part">
-                <button class="btn_icon btn-right" data-btn="用户信息" id="user"></button>
+                <button class="btn_icon btn-right" data-btn="用户反馈" id="user"></button>
                 <button class="btn_icon btn-right" data-btn="设置选项" id="setting_btn"></button>
             </div>
         </section>
@@ -155,6 +156,7 @@
 <script>
     // ../表示上一层文件夹，并且是可以叠加的
     require('../../renderer.js')
+    // require('../../auto-updater.js')
     require('./index.js')
     require('./cloud.js')
     require('./setting.js')

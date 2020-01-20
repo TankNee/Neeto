@@ -1,34 +1,56 @@
 {
-    "name": "neeto",
-    "version": "1.0.0",
-    "description": "a simple markdown editer",
-    "main": "app/main.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron .",
-        "package-ia32": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10 --overwrite",
-        "package-x64": "electron-packager . Neeto --out ./out --overwrite",
-        "packafe-darwin": "electron-packager . 'Neeto' --platform=darwin --arch=x64 --out=./out --asar --app-version=1.0.0 --overwrite",
-        "package-all": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10 --overwrite && electron-packager . Neeto --out ./out --overwrite",
-        "git-push": "git push -u origin master && git push -u github master"
+  "name": "neeto",
+  "version": "1.0.6",
+  "description": "a simple markdown editor",
+  "main": "app/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "package-ia32": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10 --overwrite",
+    "package-x64": "electron-packager . Neeto --out ./out --overwrite",
+    "packafe-darwin": "electron-packager . 'Neeto' --platform=darwin --arch=x64 --out=./out --asar --app-version=1.0.0 --overwrite",
+    "package-all": "electron-packager . Neeto --win64 --out ./out --arch=ia32 --electron-version 6.0.10 --overwrite && electron-packager . Neeto --out ./out --overwrite",
+    "git-push": "git push -u origin master && git push -u github master",
+    "win-64": "electron-builder --win --x64"
+  },
+  "author": "TankNee",
+  "license": "Apache-2.0",
+  "build": {
+    "productName": "Neeto",
+    "appId": "0704",
+    "copyright": "TankNee",
+    "compression": "store",
+    "directories": {
+      "output": "out"
     },
-    "author": "TankNee",
-    "license": "Apache-2.0",
-    "dependencies": {
-        "electron-packager": "^14.2.0",
-        "element": "^0.1.4",
-        "fontawesome": "^5.6.3",
-        "jquery": "^3.4.1",
-        "mdui": "^0.4.3",
-        "showdown": "^1.9.1",
-        "showdown-highlight": "^2.1.3",
-        "showdown-katex": "^0.6.0",
-        "simplemde": "^1.11.2"
-    },
-    "devDependencies": {
-        "electron": "^7.1.7",
-        "markdown-it": "^10.0.0",
-        "marked": "^0.8.0",
-        "katex": "^0.11.1"
-    }
+    "asar": false,
+    "publish":[
+      {
+        "provider":"generic",
+        "url": "htto://localhost:3000/release"
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "element": "^0.1.4",
+    "font-awesome": "^4.7.0",
+    "fontawesome": "^5.6.3",
+    "jquery": "^3.4.1",
+    "mdui": "^0.4.3",
+    "showdown": "^1.9.1",
+    "showdown-highlight": "^2.1.3",
+    "showdown-katex": "^0.6.0",
+    "simplemde": "^1.11.2"
+  },
+  "devDependencies": {
+    "electron": "^7.1.7",
+    "electron-packager": "^14.2.0",
+    "electron-windows-installer": "^1.7.8",
+    "grunt": "^1.0.4",
+    "grunt-electron-installer": "^2.1.0",
+    "katex": "^0.11.1",
+    "markdown-it": "^10.0.0",
+    "marked": "^0.8.0"
+  }
 }

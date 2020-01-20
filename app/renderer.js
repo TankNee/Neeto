@@ -9,7 +9,7 @@ const showdownKatex = require('showdown-katex')
 const SimpleMde = require('simplemde')
 const mdui = require('mdui')
 const fs = require('fs')
-
+const luluDialog = require('./js/common/ui/Dialog')
 // 几个状态参量
 let filePath = null;
 let pages = []
@@ -35,6 +35,7 @@ const cloudContent = document.querySelector('#cloud_setting')
 const settingBtn = document.querySelector('#setting_btn')
 const settingContent = document.querySelector('#setting')
 
+const loginBtn = document.querySelector('#user')
 
 pages.push(content)
 pages.push(cloudContent)
@@ -131,8 +132,28 @@ newFileButton.addEventListener('click', () => {
     hidePage()
     content.classList.add('show')
 })
-ipcRenderer.on('page-reload', () => {
-
+// 登录按钮
+loginBtn.addEventListener('click', () => {
+    new Dialog({
+        title: '给我提建议',
+        content: `
+        <div id="dialogContent" style="display:flex;flex-direction: column;">
+            <textarea class="ui-textarea" style="height: 100px;"></textarea>
+        </div>
+        `,
+        buttons: [
+            {
+                value: '发送',
+                events: function (event) {
+                    var feedback =  $("div#dialogContent textarea").val()
+                    console.log(feedback)
+                    fetch(`http://localhost:3000/feedback?feedback=${feedback}`)
+                    event.data.dialog.remove();
+                    new LightTip().success('反馈发送成功', 2000);
+                }
+            }
+        ]
+    })
 })
 
 // 基于打开的文件更新窗口标题

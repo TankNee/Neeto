@@ -51,7 +51,7 @@ const windowTitle = document.querySelector('#file_name')
 
 var smde = new SimpleMde({
     element: document.getElementById("markdown"),
-    autoDownloadFontAwesome: true,
+    autoDownloadFontAwesome: false,
     status: false,
     toolbar: [
         "bold", "italic", "strikethrough", "heading", "code", "quote", "unordered-list",
@@ -200,8 +200,6 @@ smde.codemirror.on("drop", function (editor, e) {
                     smde.codemirror.doc.replaceSelection(finalUrl)
                     rendererMarkDownToHtml(smde.value())
                     new LightTip().success('本地图片添加成功', 2000);
-
-
                 }
             });
         } else {
@@ -326,7 +324,7 @@ const getDroppedFile = (e) => {
 }
 const fileTypeIsSupported = (file) => {
     // console.log(file)
-    return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(file.type)
+    return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif',''].includes(file.type)
 }
 
 

@@ -147,7 +147,7 @@ button {
 }
 
 #new_file {
-    background-image: url(../../assets/images/new.png);
+    background-image: url(../../assets/images/edit.png);
 }
 
 #new_file:hover {
@@ -183,7 +183,7 @@ button {
 }
 
 #user {
-    background-image: url(../../assets/images/user.png);
+    background-image: url(../../assets/images/paper-plane.png);
 }
 
 #user:hover {
@@ -298,7 +298,9 @@ button {
     padding-bottom: 30px;
     list-style-type: square;
 }
-
+.ui-dialog-footer{
+    max-height: none;
+}
 
 
 
