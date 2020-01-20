@@ -326,7 +326,7 @@ const getDroppedFile = (e) => {
 }
 const fileTypeIsSupported = (file) => {
     // console.log(file)
-    return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', ''].includes(file.type)
+    return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(file.type)
 }
 
 
