@@ -134,6 +134,7 @@ const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
  */
 const openFile = exports.openFile = (targetWindow, file) => {
     const content = fs.readFileSync(file).toString()
+    console.log("path",file)
     app.addRecentDocument(file)
     targetWindow.setRepresentedFilename(file)
     // 开启文件监视器

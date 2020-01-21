@@ -23,11 +23,14 @@
     "directories": {
       "output": "out"
     },
+    "win": {
+      "icon": "assets/icon/win_icon2.ico"
+    },
     "asar": false,
-    "publish":[
+    "publish": [
       {
-        "provider":"generic",
-        "url": "htto://localhost:3000/release"
+        "provider": "generic",
+        "url": "htto://feedback.neeto.cn/release"
       }
     ]
   },
