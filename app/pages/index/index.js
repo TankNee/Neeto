@@ -1,7 +1,7 @@
 // 模块引入
 const showdown = require('showdown')
 const showdownhighlight = require('showdown-highlight')
-const { remote, ipcRenderer, shell } = require('electron')
+const { remote, ipcRenderer, shell, clipboard } = require('electron')
 const { Menu } = remote
 const mainProcess = remote.require('./main.js')
 const path = require('path')
@@ -13,12 +13,8 @@ const lightTip = require('../../js/common/ui/LightTip')
 // 几个状态参量
 let filePath = null;
 let originalContent = '';
+let loading = `<div class="ui-loading" style="height:100px;"><s class="ui-loading-icon"></s></div>`
 let isDocChanged = false
-// let baseConfig = {
-//     baseUrl: 'http://localhost:8080/api',
-//     picBedUrl: 'https://pic.tanknee.cn/api/upload',
-//     token: 'bdaaa8a43a8e8e58ce46cd5aa38848d6'
-// }
 let baseConfig = {
     baseUrl: undefined,
     picBedUrl: undefined,
@@ -76,6 +72,9 @@ const rendererMarkDownToHtml = (markdown) => {
         ghCodeBlocks: true
     });
     htmlView.innerHTML = converter.makeHtml(markdown)
+    $("div#html a").addClass('ui-button ui-button-primary')
+    $("div#html a").css("padding", "5px 10px")
+    $("div#html a").css("color", "white")
 }
 /**
  * 监听change事件
@@ -154,7 +153,12 @@ smde.codemirror.on("dragover", function (editor, e) {
 });
 smde.codemirror.on("drop", function (editor, e) {
     const file = getDroppedFile(e)
+    console.log(e)
+    console.log(file)
     var df = e.dataTransfer
+    dealWithFile(file, df)
+});
+const dealWithFile = (file, df) => {
     // 文件对象数组
     var dropFiles = []
     console.log(file)
@@ -177,18 +181,22 @@ smde.codemirror.on("drop", function (editor, e) {
             dropFiles.forEach(file => {
                 const formdata = new FormData()
                 formdata.append('image', file)
+                console.log(file)
                 console.log(baseConfig)
+                smde.codemirror.doc.replaceSelection(loading)
                 if (baseConfig.picBedUrl) {
                     uploadToPicBeds(formdata, baseConfig.picBedUrl, baseConfig.token)
                         .then(res => {
                             console.log(res)
                             var finalUrl = `<img src="${res}">`
+                            smde.codemirror.doc.undoSelection()
                             smde.codemirror.doc.replaceSelection(finalUrl)
                             rendererMarkDownToHtml(smde.value())
                             new LightTip().success('图床图片上传成功', 2000);
                         })
                         .catch(res => {
                             console.log(res);
+                            smde.codemirror.doc.undoSelection()
                             new LightTip().error('图床图片上传失败，请检查图床配置', 4000);
                             finalUrl = `![${file.name}](${file.path})`
                             smde.codemirror.doc.replaceSelection(finalUrl)
@@ -197,6 +205,7 @@ smde.codemirror.on("drop", function (editor, e) {
 
                 } else {
                     var finalUrl = `![${file.name}](${file.path})`
+                    smde.codemirror.doc.undoSelection()
                     smde.codemirror.doc.replaceSelection(finalUrl)
                     rendererMarkDownToHtml(smde.value())
                     new LightTip().success('本地图片添加成功', 2000);
@@ -208,9 +217,8 @@ smde.codemirror.on("drop", function (editor, e) {
     } else {
         new LightTip().error('该文件类型暂时无法上传', 4000);
     }
-    isDocChanged = false
-    saveMarkdownButton.disabled = !isDocChanged
-});
+}
+
 /**
  * 将文件上传到图床
  * @param {Object} formdata 图片文件对象
@@ -239,7 +247,48 @@ const uploadToPicBeds = (formdata, picBedUrl, token = '') => {
             })
     })
 }
+// 处理粘贴事件
+smde.codemirror.on("paste", function (editor, e) {
+    var image = clipboard.readImage()
+    console.log(image.isEmpty())
+    if (image.isEmpty()) {
+        return;
+    }
+    var file = new File([image.toPNG()], `${Date.now()}.png`, { type: 'image/png', lastModified: Date.now() })
+    console.log(file)
+    const formdata = new FormData()
+    formdata.append('image', file)
+    smde.codemirror.doc.replaceSelection(loading)
+    if (baseConfig.picBedUrl) {
+        uploadToPicBeds(formdata, baseConfig.picBedUrl, baseConfig.token)
+            .then(res => {
+                console.log(res)
+                var finalUrl = `<img src="${res}">`
+                smde.codemirror.doc.undoSelection()
+                smde.codemirror.doc.replaceSelection(finalUrl)
+                rendererMarkDownToHtml(smde.value())
+                new LightTip().success('图床图片上传成功', 2000);
+            })
+            .catch(res => {
+                console.log(res);
+                smde.codemirror.doc.undoSelection()
+                new LightTip().error('图床图片上传失败，请检查图床配置', 4000);
+                finalUrl = `![${file.name}](${file.path})`
+                smde.codemirror.doc.replaceSelection(finalUrl)
+                rendererMarkDownToHtml(smde.value())
+            })
 
+    } else {
+        var finalUrl = `![${file.name}](${file.path})`
+        smde.codemirror.doc.undoSelection()
+        smde.codemirror.doc.replaceSelection(finalUrl)
+        rendererMarkDownToHtml(smde.value())
+        new LightTip().success('本地图片添加成功', 2000);
+    }
+    // console.log(blob);
+
+
+})
 
 
 // 监听file-opened频道，接收主进程传递来的消息
@@ -324,7 +373,7 @@ const getDroppedFile = (e) => {
 }
 const fileTypeIsSupported = (file) => {
     // console.log(file)
-    return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif',''].includes(file.type)
+    return ['text/plain', 'text/x-markdown', 'text/md', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif', ''].includes(file.type)
 }
 
 

@@ -32,20 +32,21 @@ app.on('ready', () => {
     })
     // updater.checkForUpdates()
     console.log(app.getVersion());
-    
+
     // global.baseConfig = readConfig()
     // ipcMain.send('iniConfig',readConfig())
 
 })
 app.on('will-finish-launching', () => {
     // 外界触发的文件打开事件
-    app.on('open-file', (e, file) => {
-        console.log(file)
-        const win = creatWindow()
-        win.once('ready-to-show', () => {
-            new LightTip().success('保存成功', 2000);
-            openFile(win, file);
-        })
+    
+})
+app.on('open-file', (e, file) => {
+    console.log(file)
+    const win = creatWindow()
+    win.once('ready-to-show', () => {
+        new LightTip().success('保存成功', 2000);
+        openFile(win, file);
     })
 })
 app.on('will-quit', () => {
@@ -206,11 +207,11 @@ const startWatchingFile = (targetWindow, file, type = 'markdownFile') => {
             console.log(type);
             if (type === 'configFile') {
                 let json = readConfig(targetWindow)
-                targetWindow.webContents.send('file-changed', file, json, type)
-            }else{
+                targetWindow.webContents.send('iniConfig',json)
+            } else {
                 targetWindow.webContents.send('file-changed', file, content, type)
             }
-            
+
         }
     })
     if (type === 'configFile') {
@@ -252,10 +253,23 @@ const readConfig = (targetWindow) => {
     // 配置文件路径
     var path = __dirname + '/config/config.json';
     console.log(path);
-    
+
     // 开启监视器
     startWatchingFile(targetWindow, path, 'configFile')
     var data = fs.readFileSync(path, "utf-8").toString()
     let json = JSON.parse(data)
     return json;
+}
+/**
+ * 存储配置文件
+ * @param {json} config 
+ */
+const writeConfig= exports.writeConfig = (config) => {
+    var path = __dirname + '/config/config.json';
+    console.log(path);
+    console.log(config);
+    var content = JSON.stringify(config)
+    console.log(content);
+    
+    fs.writeFileSync(path, content);
 }

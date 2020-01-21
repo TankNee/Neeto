@@ -59,13 +59,13 @@
 .renderer_html h2 {
     display: block;
     text-align: center;
-    background-image: url(https://my-wechat.mdnice.com/mdnice/mountain_2_20191028221337.png);
+    background-image: url(../../assets/images/H2_Background.png);
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: initial;
     background-origin: initial;
     background-clip: initial;
-    background-size: 63px;
+    background-size: 52px;
     margin-top: 38px;
     margin-bottom: 10px;
 }

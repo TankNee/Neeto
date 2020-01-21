@@ -1,7 +1,7 @@
 // 模块引入
 const showdown = require('showdown')
 const showdownhighlight = require('showdown-highlight')
-const { remote, ipcRenderer, shell } = require('electron')
+const { remote, ipcRenderer, shell, clipboard } = require('electron')
 const { Menu } = remote
 const mainProcess = remote.require('./main.js')
 const path = require('path')
@@ -35,12 +35,12 @@ const cloudContent = document.querySelector('#cloud_setting')
 const settingBtn = document.querySelector('#setting_btn')
 const settingContent = document.querySelector('#setting')
 
-const loginBtn = document.querySelector('#user')
+const feedbackBtn = document.querySelector('#feedback')
 
 pages.push(content)
 pages.push(cloudContent)
-console.log(pages)
-const saveHtmlButton = document.querySelector('#save_html')
+
+const pasteToWechat = document.querySelector('#paste_to_wechat')
 const revertButton = document.querySelector('#revert')
 
 
@@ -133,23 +133,32 @@ newFileButton.addEventListener('click', () => {
     content.classList.add('show')
 })
 // 登录按钮
-loginBtn.addEventListener('click', () => {
+feedbackBtn.addEventListener('click', () => {
     new Dialog({
         title: '给我提建议',
         content: `
         <div id="dialogContent" style="display:flex;flex-direction: column;">
-            <textarea class="ui-textarea" style="height: 100px;"></textarea>
+            <textarea class="ui-textarea" style="height: 100px; margin-bottom: 10px"></textarea>
+            <input class="ui-input" placeholder="请输入您的邮箱，方便我跟您取得联系" style="height: 30px">
         </div>
         `,
         buttons: [
             {
                 value: '发送',
                 events: function (event) {
-                    var feedback =  $("div#dialogContent textarea").val()
-                    console.log(feedback)
-                    fetch(`http://localhost:3000/feedback?feedback=${feedback}`)
+                    var feedbackContent = $("div#dialogContent textarea").val()
+                    var mailAddress = $("div#dialogContent input").val()
+                    var feedback = `<h2>From ${mailAddress}</h2><p>${feedbackContent}</p>`
+                    // console.log(feedback)
+                    fetch(`http://feedback.neeto.cn/feedback?feedback=${feedback}&mailAddress=${mailAddress}`)
+                    .then(res =>{
+                        new LightTip().success('反馈发送成功', 2000);
+                    })
+                    .catch(res =>{
+                        new LightTip().error(`反馈发送失败${res}`, 2000);
+                    })
                     event.data.dialog.remove();
-                    new LightTip().success('反馈发送成功', 2000);
+                    
                 }
             }
         ]
@@ -171,12 +180,26 @@ const updateUserInterface = (isEdited) => {
         currentWindow.setDocumentEdited(isEdited)
     }
     saveMarkdownButton.disabled = !isEdited
-    // saveHtmlButton.disabled = !isEdited
+    // pasteToWechat.disabled = !isEdited
 }
 
 // 将html内容保存为文件
-saveHtmlButton.addEventListener('click', () => {
-    // saveMarkdownButton.disabled = !isDocChanged
-    mainProcess.saveHtml(currentWindow, htmlView.innerHTML)
+pasteToWechat.addEventListener('click', () => {
+    if (document.body.createTextRange) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(htmlView);
+        range.select();
+    } else if (window.getSelection) {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(htmlView);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    } else {
+        console.warn("none");
+    }
+    document.execCommand("Copy");
+    window.getSelection().empty()
+    new LightTip().success('内容复制成功', 2000);
 })
 

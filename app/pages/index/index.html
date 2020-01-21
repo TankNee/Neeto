@@ -8,9 +8,6 @@
     <title>Neeto</title>
 
 
-    <!-- <link rel="stylesheet" href="../../css/katex.min.css">
-    <link rel="stylesheet" href="../../css/simplemde.min.css">
-    <link rel="stylesheet" href="../../css/mdui.min.css"> -->
     <link rel="stylesheet" href="../../css/external/katex.min.css">
     <link rel="stylesheet" href="../../css/external/simplemde.min.css">
     <link rel="stylesheet" href="../../css/external/mdui.min.css">
@@ -21,6 +18,7 @@
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/common/ui.css">
     <link rel="stylesheet" href="../../css/font-awesome.css">
+    <link rel="stylesheet" href="../../css/iconfont.css">
     <script src="../../js/plugin/jquery.js"></script>
     <script src="../../js/common/all.js"></script>
     <script src="../../js/mdui.min.js"></script>
@@ -36,17 +34,16 @@
                 <div class="file mdui-container">
                     <button class="menu_btn mdui-ripple" id="menu_file" mdui-menu="{target: '#file_menu'}">文件</button>
                     <ul class="mdui-menu" id="file_menu" style="z-index: 999999;">
-                        <li class="mdui-menu-item" id="save_html">
+                        <li class="mdui-menu-item" id="paste_to_wechat">
                             <a href="javascript:;" class="mdui-ripple">
-                                <i class="mdui-menu-item-icon mdui-icon material-icons">save</i>保存HTML
+                                <i class="iconfont neeto-weChat" style="margin-right: 15px;"></i>复制到微信公众号
                             </a>
                         </li>
-                        <li class="mdui-menu-item">
+                        <li class="mdui-menu-item" disabled>
                             <a href="javascript:;" class="mdui-ripple">
-                                <i class="mdui-menu-item-icon mdui-icon material-icons">folder_open</i>打开
+                                <i class="iconfont  neeto-files" style="margin-right: 15px;"></i>打开
                             </a>
                         </li>
-                        <!-- <li class="mdui-divider"></li> -->
                     </ul>
                 </div>
                 <div class="edit mdui-container">
@@ -54,12 +51,12 @@
                     <ul class="mdui-menu" id="edit_menu" style="z-index: 999999;">
                         <li class="mdui-menu-item" id="revert">
                             <a href="javascript:;" class="mdui-ripple">
-                                <i class="mdui-menu-item-icon mdui-icon material-icons">arrow_back</i>回退
+                                <i class="iconfont neeto-next" style="margin-right: 15px;"></i>回退
                             </a>
                         </li>
-                        <li class="mdui-menu-item">
+                        <li class="mdui-menu-item" disabled>
                             <a href="javascript:;" class="mdui-ripple">
-                                <i class="mdui-menu-item-icon mdui-icon material-icons">arrow_forward</i>恢复
+                                <i class="iconfont neeto-previous" style="margin-right: 15px;"></i>恢复
                             </a>
                         </li>
                         <!-- <li class="mdui-divider"></li> -->
@@ -89,7 +86,7 @@
                 <button class="btn_icon btn-right" data-btn="云端设置" id="cloud"></button>
             </div>
             <div class="bottom_part">
-                <button class="btn_icon btn-right" data-btn="用户反馈" id="user"></button>
+                <button class="btn_icon btn-right" data-btn="用户反馈" id="feedback"></button>
                 <button class="btn_icon btn-right" data-btn="设置选项" id="setting_btn"></button>
             </div>
         </section>
@@ -116,34 +113,35 @@
         <!-- 设置界面显示区域 -->
         <section class="section content setting_content" id="setting">
             <div class="ui-tab-tabs default-tabs" id="cloud_setting_tab">
-                <a href="javascript:" class="ui-tab-tab checked" id="tab_setting_editor">编辑器设置</a>
-                <a href="javascript:" class="ui-tab-tab" id="tab_setting_picbed">图床设置</a>
+                <a href="javascript:" class="ui-tab-tab checked" id="tab_setting_picbed">图床设置</a>
+                <a href="javascript:" class="ui-tab-tab" id="tab_setting_editor">编辑器设置</a>
             </div>
             <div class="ui-tab-contents">
-                <div class="ui-tab-content checked" id="tab_setting_editor_content">
+                <div class="ui-tab-content " id="tab_setting_editor_content">
                     <section class="neeto-setting_content">
                         <input class="ui-input">
                     </section>
                 </div>
-                <div class="ui-tab-content" id="tab_setting_picbed_content">
+                <div class="ui-tab-content checked" id="tab_setting_picbed_content">
                     <div class="neeto-setting_content show">
                         <div class="setting_content_item">
-                            <span>图床名称:</span><span class="ui-input" id="pic_name_input"><input></span>
+                            <span>图床名称:</span><input class="ui-input" id="pic_name_input"></input>
                         </div>
                         <div class="setting_content_item">
-                            <span>图床地址:</span><span class="ui-input" id="pic_url_input"><input></span>
+                            <span>图床地址:</span><input class="ui-input" id="pic_url_input"></input>
                         </div>
                         <div class="setting_content_item">
-                            <span>图床token:</span><span class="ui-input" id="pic_token_input"><input></span>
+                            <span>图床token:</span><input class="ui-input" id="pic_token_input"></input>
                         </div>
                         <div class="setting_content_item">
-                            <span>键值名:</span><span class="ui-input" id="pic_key_input"><input></span>
+                            <span>键值名:</span><input class="ui-input" id="pic_key_input"></input>
                         </div>
                         <div class="setting_content_item">
-                            <span>URL所在的标签:</span><span class="ui-input" id="pic_tag_input"><input></span>
+                            <span>URL所在的标签:</span><input class="ui-input" id="pic_tag_input"></input>
                         </div>
                         <div class="setting_content_item">
-                            <a class="ui-button ui-button-primary" role="button" style="width: 100%;" id="picSettingConfirmBtn">确认</a>
+                            <a class="ui-button ui-button-primary" role="button" style="width: 100%;"
+                                id="picSettingConfirmBtn">保存</a>
                         </div>
                     </div>
 

@@ -182,11 +182,11 @@ button {
     background-image: none;
 }
 
-#user {
+#feedback {
     background-image: url(../../assets/images/paper-plane.png);
 }
 
-#user:hover {
+#feedback:hover {
     background-image: none;
 }
 
@@ -285,7 +285,10 @@ button {
 .editor-toolbar {
     border: none;
 }
-
+.mdui-menu{
+    width: 180px;
+    font-size: 14px;
+}
 .ui-tab-tabs.default-tabs {
     width: 100%;
 }
