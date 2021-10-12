@@ -47,7 +47,7 @@
     "simplemde": "^1.11.2"
   },
   "devDependencies": {
-    "electron": "^7.2.4",
+    "electron": "^11.5.0",
     "electron-packager": "^14.2.0",
     "electron-windows-installer": "^1.7.8",
     "grunt": "^1.0.4",
