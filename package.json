@@ -54,6 +54,6 @@
     "grunt-electron-installer": "^2.1.0",
     "katex": "^0.11.1",
     "markdown-it": "^10.0.0",
-    "marked": "^0.8.0"
+    "marked": "^4.0.10"
   }
 }
